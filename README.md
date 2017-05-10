@@ -1,32 +1,166 @@
-# Boilerplate for creating React Npm packages with ES2015
+# collab-meteor
 
-The package is based on [npm-base](https://github.com/kadirahq/npm-base) package by [Kadira](https://github.com/kadirahq) which is really great when you want to prepare Npm package. This one is prepared to be used as a starter point for React components which needs to be published on Npm.
+Meteor Atmosphere package for smooth and quick integration of a real-time collaborative form using React
 
-It includes linting with [ESLint](http://eslint.org/) and testing with [Mocha](https://mochajs.org/), [Enzyme](http://airbnb.io/enzyme/) and [JSDOM](https://github.com/tmpvar/jsdom).
+## Table of contents
+- [Installation](#installation)
+- [Server initialization](#server-initialization)
+- [Usage](#usage)
+    - [Simple collaborative Editor](#simple-collaborative-editor)
+        - [Server API](#editor-server-api)
+        - [Client API](#editor-client-api)
+    - [Collaborative Form](#collaborative-form)
+        - [Server API](#editor-server-api)
+        - [Client API](#editor-client-api)
+- [License](#license)
+---
 
-Also there is of course ES6 transpilation.
+## Installation
+- Requires React 15.4.0+.
+- Requires "react-jsonschema-form" npm package.
+> Note: The "master" branch of the repository reflects the published stable release.
+
+```
+$ meteor add danongba:collab-meteor
+```
+
+> Note: It is recommended to use [Bootstrap](http://getbootstrap.com/)  with this package for better rendering of the form.
+
+## Server initialization
+In order to use the collaborative functionalities, you will need to start a new
+CollabMeteor server instance. One way to do it is on startup:
+```JavaScript
+import { CollabMeteor } from 'meteor/danongba:collab-meteor';
+
+Meteor.startup(() => {
+  CollabMeteor.startServer();
+});
+```
+You can also stop the server by calling:
+
+```JavaScript
+CollabMeteor.stopServer();
+```
 
 ## Usage
+For a basic implementation, see the example Meteor app.
 
-1. Clone this repo
-2. Inside cloned repo run `npm install && rm -rf .git && git init` and update `package.json` with your package name.
-3. If you want to run tests: `npm test` or `npm run testonly` or `npm run test-watch`. You need to write tests in `__tests__` folder. You need at least Node 4 on your machine to run tests.
-4. If you want to run linting: `npm test` or `npm run lint`. Fix bugs: `npm run lint-fix`. You can adjust your `.eslintrc` config file.
-5. If you want to run transpilation to ES5 in `dist` folder: `npm run prepublish` (standard npm hook).
+### Simple Collaborative Editor
 
-## CSS and preprocessors
+To implement a simple collaborative editor (textarea), start by instantiating
+a new `CollabModel` on the server, taking as parameter the name of the collaborative collection:
 
-For more information check out this thread: [#5](https://github.com/juliancwirko/react-npm-boilerplate/issues/5)
+```JavaScript
+import { CollabModel } from 'meteor/danongba:collab-meteor';
 
-## Blog post about it:
+const model = new CollabModel("documents");
+model.create("myEditor");
+```
 
-- [Creating React NPM packages with ES2015](http://julian.io/creating-react-npm-packages-with-es2015/)
+#### Server API
 
-## Also check out
+- `create(id, data = "")`: Creates a new document with `id` and with initial `data` (String).
+- `remove(id)`: Deletes a document with ID `id`.
 
-- [React Alert UI component](https://github.com/juliancwirko/react-s-alert)
-- [React project boilerplate with Webpack, HMR, React Router](https://github.com/juliancwirko/react-boilerplate)
+#### Client API
+
+Just call `CollabEditor` from the client
+
+```jsx
+import React, { Component } from 'react';
+import { render } from "react-dom";
+import { CollabEditor } from 'meteor/danongba:collab-meteor';
+
+render((
+  <CollabEditor
+    id="myEditor"
+    collectionName="documents"
+  />
+), document.getElementById("app"));
+```
+Props of `CollabEditor`:
+- `id`: ID of the document to fetch from the database
+- `collectionName`: Name of the collection
+- `rows`: "rows" attribute of the textarea
+- `classNames`: default is `form-control`
+- `onChange`: Function called on every modification. Returns the current value of the editor.
+
+### Collaborative Form
+>Note: The collaborative form is based on [react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
+
+To implement a collaborative form, start by instantiating a new `CollabFormModel` on the server,
+taking as parameter the name of the collection and a schema:
+
+```JavaScript
+import { CollabModel } from 'meteor/danongba:collab-meteor';
+
+const model = new CollabModel("forms");
+const schema = {
+      title: "My collaborative form",
+      type: "object",
+      required: ["input", "textarea"],
+      properties: {
+        input: {type: "string", title: "Input"},
+        textarea: {type: "string", title: "Textarea", default: 'Default text'},
+      }
+    };
+model.createForm("myForm", schema);
+```
+This will create a new collaborative document on the database containing the
+collaborative data of the form.
+#### Server API
+
+- `create(id, schema = {})`: Creates a new document with `id` and with initial data corresponding to the schema.
+- `remove(id)`: Deletes a form with ID `id`.
+
+#### Client API
+
+Just call `CollabForm` from the client. Every `String` in the schema will be collaborative by default.
+
+```jsx
+import React, { Component } from 'react';
+import { render } from "react-dom";
+import { CollabForm } from 'meteor/danongba:collab-meteor';
+
+render((
+  <CollabForm
+    id="MyForm"
+    collectionName="forms"
+    schema={schema}
+  />
+), document.getElementById("app"));
+```
+> Note: `CollabForm` can be used exactly like `Form` from `react-jsonschema-form`
+with few exceptions (see below).
+
+
+Props of `CollabForm` that vary from `react-jsonschema-form`:
+- `id`: ID of the form to fetch from the database
+- `collectionName`: Name of the collection
+
+The supported collaborative types are `text` and `textarea`. They can be defined in the 
+`uiSchema` like:
+```jsx
+const uiSchema = {textarea: {"ui:widget": "textarea"} }
+
+render((
+  <CollabForm
+    id="MyForm"
+    collectionName="forms"
+    schema={schema}
+    uiSchema={uiSchema}
+  />
+), document.getElementById("app"));
+
+```
+>Note: `text` is the default String type.
+
+>Note: Do not pass `formData` to `CollabForm`, the data will be fetched
+from the collaboratively shared data in the database.
+
+## Example app
+An example app is present in this directory, feel free look at it for a real implementation
+of `collab-meteor`.
 
 ## License
-
-MIT
+TODO
