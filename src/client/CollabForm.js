@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import Form from "react-jsonschema-form";
+import Form from 'react-jsonschema-form';
 import connection from './connection';
 import CollabStringField from './fields/CollabStringField';
 

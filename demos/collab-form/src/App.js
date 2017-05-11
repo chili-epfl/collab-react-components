@@ -2,7 +2,7 @@
  * Created by dario on 11.05.2017.
  */
 import React, { Component } from 'react';
-import CollabForm  from '../../../dist/client/CollabForm';
+import { CollabForm }  from '../../../dist/client';
 
 // App component - represents the whole app
 export default class App extends Component {
