@@ -1,22 +1,62 @@
+/**
+ * Created by dario on 11.05.2017.
+ */
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import CollabWebForms  from '../../../dist/client/index';
 
-class App extends Component {
+// App component - represents the whole app
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.schema = {
+      title: "My Collaborative form",
+      type: "object",
+      required: ["input", "textarea"],
+      properties: {
+        input: {type: "string", title: "Input"},
+        checkbox: {type: "boolean", title: "Checkbox"},
+        textarea: {type: "string", title: "Textarea", default: 'Default text'},
+      }
+    };
+
+    this.uiSchema = {
+      input: {"ui:help": "Help text"},
+      textarea: {"ui:widget": "textarea", "ui:options": {rows: 8} },
+    };
+    
+    console.log(CollabWebForms);
+  }
+
+  static onChange({formData}) {
+    console.log('onChange: ' + formData);
+  }
+
+  static onSubmit({formData}) {
+    console.log('onSubmit: ' + formData);
+  }
+
+  static onError(errors) {
+    console.log('onError: ' + errors);
+  }
+
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="container">
+        <header>
+          <h1>Collaborative Form</h1>
+        </header>
 
+        <CollabWebForms.Form
+          id="myForm"
+          collectionName="forms"
+          schema={this.schema}
+          uiSchema={this.uiSchema}
+          onChange={App.onChange}
+          onSubmit={App.onSubmit}
+          onError={App.onError}
+        />
       </div>
     );
   }
 }
-
-export default App;
