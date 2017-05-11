@@ -15,7 +15,7 @@ import connection from './connection';
  * - collectionName: The name of the collection
  * - classname: Optional classname to apply to the textarea
  */
-class CollabEditor extends Component {
+export default class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +28,7 @@ class CollabEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!_.isEqual(this.props, nextProps)) {
+    if (!_.isEqual(this.props, nextProps)) {
       this.destroyBinding();
       this.subscribeToDoc(nextProps);
     }
@@ -45,7 +45,7 @@ class CollabEditor extends Component {
     const doc = connection.get('collab_data_' + props.collectionName, props.id);
     doc.subscribe((err) => {
       if (err) console.log(err);
-      if(doc.type === null) {
+      if (doc.type === null) {
         console.log('No document exist with id: ' + props.id);
       }
     });
@@ -68,7 +68,7 @@ class CollabEditor extends Component {
     this.binding.setup();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.destroyBinding();
   }
 
@@ -85,7 +85,7 @@ class CollabEditor extends Component {
 }
 
 CollabEditor.defaultProps = {
-  classNames: "form-control"
+  classNames: 'form-control'
 };
 
 CollabEditor.PropTypes = {
@@ -95,5 +95,3 @@ CollabEditor.PropTypes = {
   rows: PropTypes.number,
   onChange: PropTypes.func
 };
-
-export default CollabEditor;

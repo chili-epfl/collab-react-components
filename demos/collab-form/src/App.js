@@ -2,7 +2,7 @@
  * Created by dario on 11.05.2017.
  */
 import React, { Component } from 'react';
-import CollabWebForms  from '../../../dist/client/index';
+import CollabForm  from '../../../dist/client/CollabForm';
 
 // App component - represents the whole app
 export default class App extends Component {
@@ -25,7 +25,7 @@ export default class App extends Component {
       textarea: {"ui:widget": "textarea", "ui:options": {rows: 8} },
     };
     
-    console.log(CollabWebForms);
+    console.log(CollabForm);
   }
 
   static onChange({formData}) {
@@ -47,7 +47,7 @@ export default class App extends Component {
           <h1>Collaborative Form</h1>
         </header>
 
-        <CollabWebForms.Form
+        <CollabForm
           id="myForm"
           collectionName="forms"
           schema={this.schema}
