@@ -24,8 +24,6 @@ export default class App extends Component {
       input: {"ui:help": "Help text"},
       textarea: {"ui:widget": "textarea", "ui:options": {rows: 8} },
     };
-    
-    console.log(CollabForm);
   }
 
   static onChange({formData}) {

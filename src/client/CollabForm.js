@@ -4,6 +4,7 @@
 
 import React, { Component } from 'react';
 import Form from 'react-jsonschema-form';
+import _ from 'underscore'
 import connection from './connection';
 import CollabStringField from './fields/CollabStringField';
 
@@ -38,7 +39,7 @@ export default class CollabForm extends Component {
     const form = connection.get('collab_data_' + props.collectionName, props.id);
     form.subscribe((err) => {
       if (err) console.log(err);
-      if(form.type === null) {
+      if (form.type === null) {
         console.log('No form data exist with id: ' + props.id);
       }
     });
@@ -66,13 +67,13 @@ export default class CollabForm extends Component {
     }
   }
 
-  onChange(changeStatus){
+  onChange(changeStatus) {
     console.log(changeStatus);
     // We update every element that is non collaborative on onChange
     _.each(this.state.nonCollabKeys, function(value) {
       const op = [{p: [value], od: null, oi: changeStatus.formData[value]}];
       this.state.form.submitOp(op, function(err) {
-        if (err) { console.log(err); }
+        if (err) console.log(err);
       })
     }.bind(this));
 
