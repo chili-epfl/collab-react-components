@@ -15,7 +15,7 @@ export default class CollabModel {
   }
 
   /**
-   * Creates a new document or fetch a document if it already exists.
+   * Creates a new document.
    *
    * @param {String} id The document id
    * @param {String} data The document initial data string.
@@ -35,7 +35,7 @@ export default class CollabModel {
   }
 
   /**
-   * Creates a new form given a schema or fetch a form if it already exists.
+   * Creates a new form given a schema.
    *
    * @param {String} id The form id
    * @param {Object} schema The form schema used to generate the data object
@@ -47,7 +47,7 @@ export default class CollabModel {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
-        let data = {};
+        let data = schema;
         schema.properties.forEach(function (value, key) {
           let prop = {};
           // If it is a String, we create an empty string if the default value is empty.
