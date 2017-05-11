@@ -3,7 +3,4 @@
  */
 
 import { CollabServer } from './server/CollabServer';
-
-module.exports = {
-  CollabServer
-};
+module.exports = CollabServer;

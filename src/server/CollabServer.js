@@ -14,8 +14,7 @@ const defaultOptions = {
   port: 8080,
   db: {
     type: 'in-memory',
-    port: null,
-    name: null
+    url: null
   }
 };
 
@@ -28,9 +27,11 @@ CollabServer.start = (app = {}, options = {}) => {
 
   const server = http.createServer(app);
   let db = {};
-  if (CollabServer.db.type === 'mongo') {
-    const url = 'mongodb://localhost:' + CollabServer.db.port + '/' + CollabServer.db.name;
-    db = ShareDBMongo(url);
+  if (options.db.type === 'mongo') {
+    db = options.url ? ShareDBMongo(options.url) : {};
+    console.log('CollabServer: Using MongoDB adapter');
+  } else {
+    console.log('CollabServer: No Database specified, falling back to In Memory');
   }
 
   // Create the ShareDB backend (that will need to be exported)
