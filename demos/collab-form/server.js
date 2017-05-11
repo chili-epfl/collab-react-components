@@ -4,7 +4,8 @@
 
 const Express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const CollabServer = require('../../dist/index');
+const CollabServer = require('../../dist/index').Server;
+const CollabModel = require('../../dist/index').Model;
 
 /* Create Express application */
 const app = Express();
@@ -31,3 +32,21 @@ const options = {
 
 /* Create a CollabServer instance with MongoDB */
 CollabServer.start(app, options);
+
+// Create the collection that will hold the shared data.
+const formModel = new CollabModel("forms");
+
+// Define the schema of the data
+const schema = {
+  title: "My Collaborative form",
+  type: "object",
+  properties: {
+    input: {type: "string", title: "Input"},
+    checkbox: {type: "boolean", title: "Checkbox"},
+    checkbox2: {type: "boolean", title: "Checkbox2"},
+    textarea: {type: "string", title: "Textarea", default: 'Default text'},
+  }
+};
+
+// Create the shared form data
+formModel.createForm("myForm", schema);

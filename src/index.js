@@ -5,5 +5,8 @@
 import CollabServer from './server/CollabServer';
 import CollabModel from './server/CollabModel';
 
-exports.CollabServer = CollabServer;
-exports.CollabModel = CollabModel;
+const CollabWebForms = {};
+CollabWebForms.Server = CollabServer;
+CollabWebForms.Model = CollabModel;
+
+module.exports = CollabWebForms;
