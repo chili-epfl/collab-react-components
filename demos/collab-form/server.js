@@ -2,12 +2,13 @@
  * Created by dario on 11.05.17.
  */
 
-import express from 'express';
-import collabServer from 'collab-web-forms';
+const express = require('express');
+const collabServer = require('collab-web-forms');
 
 const app = express();
-app.use(express.static('static'));
+// Express only serves static assets in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
-console.log(app);
-console.log('salut');
 console.log(collabServer);

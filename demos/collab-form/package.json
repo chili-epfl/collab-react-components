@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "collab-web-forms": "file:///home/dario/Documents/semester_project/collab-web-forms/collab-web-forms-0.0.0.tgz",
-    "express": "^4.15.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
   "devDependencies": {
+    "express": "^4.15.2",
     "react-scripts": "0.9.5"
   },
   "scripts": {

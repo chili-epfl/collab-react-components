@@ -2,4 +2,8 @@
  * Created by Dario on 11.05.17.
  */
 
-export { CollabServer } from './server/CollabServer';
+import { CollabServer } from './server/CollabServer';
+
+module.exports = {
+  CollabServer
+};
