@@ -76,9 +76,7 @@ export default class CollabForm extends Component {
         console.log(key);
         const op = [{ p: [key], od: null, oi: changeStatus.formData[key] }];
         this.state.form.submitOp(op, function(err) {
-          if (err) {
-            console.log(err);
-          }
+          if (err) throw err
         });
       }
     });
