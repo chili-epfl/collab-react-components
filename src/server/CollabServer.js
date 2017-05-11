@@ -59,4 +59,4 @@ CollabServer.stop = () => {
   console.log('CollabServer: Server stopped');
 };
 
-export { CollabServer };
+export default CollabServer;

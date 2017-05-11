@@ -48,12 +48,12 @@ For a basic implementation, see the example Meteor app.
 ### Simple Collaborative Editor
 
 To implement a simple collaborative editor (textarea), start by instantiating
-a new `CollabModel` on the server, taking as parameter the name of the collaborative collection:
+a new `CollabModel.js` on the server, taking as parameter the name of the collaborative collection:
 
 ```JavaScript
-import { CollabModel } from 'meteor/danongba:collab-meteor';
+import { CollabModel.js } from 'meteor/danongba:collab-meteor';
 
-const model = new CollabModel("documents");
+const model = new CollabModel.js("documents");
 model.create("myEditor");
 ```
 
@@ -92,9 +92,9 @@ To implement a collaborative form, start by instantiating a new `CollabFormModel
 taking as parameter the name of the collection and a schema:
 
 ```JavaScript
-import { CollabModel } from 'meteor/danongba:collab-meteor';
+import { CollabModel.js } from 'meteor/danongba:collab-meteor';
 
-const model = new CollabModel("forms");
+const model = new CollabModel.js("forms");
 const schema = {
       title: "My collaborative form",
       type: "object",
