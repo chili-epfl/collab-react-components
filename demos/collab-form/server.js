@@ -4,8 +4,8 @@
 
 const Express = require('express');
 const MongoClient = require('mongodb').MongoClient;
-const CollabServer = require('../../dist/index').Server;
-const CollabModel = require('../../dist/index').Model;
+const CollabServer = require('../../dist').Server;
+const CollabModel = require('../../dist').Model;
 
 /* Create Express application */
 const app = Express();
@@ -30,7 +30,7 @@ const options = {
   }
 };
 
-/* Create a CollabServer instance with MongoDB */
+// Create a CollabServer instance with MongoDB
 CollabServer.start(app, options);
 
 // Create the collection that will hold the shared data.

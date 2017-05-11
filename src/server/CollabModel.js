@@ -1,4 +1,4 @@
-import CollabServer from 'CollabServer';
+import CollabServer from './CollabServer';
 
 export default class CollabModel {
   /**
