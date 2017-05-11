@@ -11,8 +11,6 @@ export default class CollabModel {
       throw new Error('CollabModel: You should start the CollabServer before using the model.');
     }
 
-    console.log(backend.db);
-
     this.connection = backend.connect();
     this.collectionName = 'collab_data_' + collectionName;
   }
