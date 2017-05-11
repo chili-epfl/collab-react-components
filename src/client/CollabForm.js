@@ -22,7 +22,8 @@ export default class CollabForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: null
+      form: null,
+      nonCollabKeys: ['checkbox']
     };
 
     _.extend(this.props.fields, {
@@ -48,6 +49,8 @@ export default class CollabForm extends Component {
     form.on('del', del.bind(this));
 
     function load() {
+      // We save all non-collaborative keys TODO
+
       // Form data available only when we are done loading the form
       this.setState({form: form});
     }
@@ -67,7 +70,10 @@ export default class CollabForm extends Component {
   onChange(changeStatus) {
     // We update every element that is non collaborative on onChange
     Object.keys(changeStatus.formData).forEach(key => {
-      if (this.state.form.data[key] !== changeStatus.formData[key]) {
+      if (
+        _.contains(this.state.nonCollabKeys, key) &&
+        this.state.form.data[key] !== changeStatus.formData[key]) {
+        console.log(key);
         const op = [{ p: [key], od: null, oi: changeStatus.formData[key] }];
         this.state.form.submitOp(op, function(err) {
           if (err) {
