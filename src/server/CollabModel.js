@@ -1,4 +1,5 @@
 import CollabServer from './CollabServer';
+import _ from 'underscore';
 
 export default class CollabModel {
   /**
@@ -9,6 +10,8 @@ export default class CollabModel {
     if (backend === null) {
       throw new Error('CollabModel: You should start the CollabServer before using the model.');
     }
+
+    console.log(backend.db);
 
     this.connection = backend.connect();
     this.collectionName = 'collab_data_' + collectionName;
@@ -48,7 +51,8 @@ export default class CollabModel {
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
         let data = schema;
-        schema.properties.forEach(function (value, key) {
+
+        _.each(schema.properties, function (value, key) {
           let prop = {};
           // If it is a String, we create an empty string if the default value is empty.
           if (value.type === 'string') {
@@ -57,10 +61,7 @@ export default class CollabModel {
             prop[key] = typeof(value.default) === 'undefined' ? null : value.default ;
           }
 
-          data = {
-            ...data,
-            ...prop
-          }
+          _.extend(data, prop);
         });
 
         doc.create(data, function (err) {

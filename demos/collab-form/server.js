@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(Express.static('client/build'));
 }
 
-/* Create a MongoDB server */
+// Create a MongoDB server
 const url = 'mongodb://localhost:27017/collab-form';
 MongoClient.connect(url)
   .catch(function (err) {
@@ -23,7 +23,6 @@ MongoClient.connect(url)
 ;
 
 const options = {
-  port: 8080,
   db: {
     type: 'mongo',
     url

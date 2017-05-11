@@ -21,14 +21,14 @@ const defaultOptions = {
 CollabServer.start = (app = {}, options = {}) => {
   // We merge the options defined by the user
   CollabServer.options = {
-    ...options,
-    ...defaultOptions
+    ...defaultOptions,
+    ...options
   };
 
   const server = http.createServer(app);
-  let db = {};
-  if (options.db.type === 'mongo') {
-    db = options.url ? ShareDBMongo(options.url) : {};
+  let db = null;
+  if (CollabServer.options.db.type === 'mongo') {
+    db = CollabServer.options.db.url ? ShareDBMongo(CollabServer.options.db.url) : {};
     console.log('CollabServer: Using MongoDB adapter');
   } else {
     console.log('CollabServer: No Database specified, falling back to In Memory');
