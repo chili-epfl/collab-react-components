@@ -19,14 +19,14 @@ const defaultOptions = {
   }
 };
 
-CollabServer.start = (options = {}) => {
+CollabServer.start = (app = {}, options = {}) => {
   // We merge the options defined by the user
   CollabServer.options = {
     ...options,
     ...defaultOptions
   };
 
-  const server = http.createServer();
+  const server = http.createServer(app);
   let db = {};
   if (CollabServer.db.type === 'mongo') {
     const url = 'mongodb://localhost:' + CollabServer.db.port + '/' + CollabServer.db.name;
@@ -58,4 +58,4 @@ CollabServer.stop = () => {
   console.log('CollabServer: Server stopped');
 };
 
-export default CollabServer;
+export { CollabServer };
