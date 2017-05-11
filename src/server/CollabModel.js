@@ -48,7 +48,7 @@ export default class CollabModel {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
-        let data = schema;
+        let data = {};
 
         _.each(schema.properties, function (value, key) {
           let prop = {};
