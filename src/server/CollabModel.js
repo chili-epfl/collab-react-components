@@ -11,8 +11,6 @@ export default class CollabModel {
       throw new Error('CollabModel: You should start the CollabServer before using the model.');
     }
 
-    console.log(backend.db);
-
     this.connection = backend.connect();
     this.collectionName = 'collab_data_' + collectionName;
   }
@@ -50,7 +48,7 @@ export default class CollabModel {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
-        let data = schema;
+        let data = {};
 
         _.each(schema.properties, function (value, key) {
           let prop = {};
