@@ -16,6 +16,7 @@ export default class App extends Component {
       properties: {
         input: {type: 'string', title: 'Input'},
         checkbox: {type: 'boolean', title: 'Checkbox'},
+        checkbox2: {type: 'boolean', title: 'Checkbox2'},
         textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
       }
     };

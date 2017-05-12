@@ -44,7 +44,6 @@ class CollabStringField extends Component {
   }
 
   render() {
-    console.log('In render string');
     const {
       schema,
       name,
