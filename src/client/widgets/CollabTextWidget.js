@@ -1,7 +1,8 @@
 /**
  * Created by dario on 04.04.17.
  */
-import React, {PropTypes}  from 'react';
+import React  from 'react';
+import PropTypes from 'prop-types';
 
 function CollabTextWidget(props) {
   const {
@@ -18,7 +19,7 @@ function CollabTextWidget(props) {
     ...inputProps
   } = props;
   const _onChange = ({ target: { value } }) => {
-    return props.onChange(value === "" ? options.emptyValue : value);
+    return props.onChange(value === '' ? options.emptyValue : value);
   };
   return (
     <input
@@ -26,7 +27,7 @@ function CollabTextWidget(props) {
       readOnly={readonly}
       disabled={disabled}
       autoFocus={autofocus}
-      value={value === null ? "" : value}
+      value={value === null ? '' : value}
       {...inputProps}
       onChange={_onChange}
       onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
@@ -36,14 +37,14 @@ function CollabTextWidget(props) {
 }
 
 CollabTextWidget.defaultProps = {
-  type: "text",
+  type: 'text',
   required: false,
   disabled: false,
   readonly: false,
   autofocus: false,
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   CollabTextWidget.propTypes = {
     id: PropTypes.string.isRequired,
     placeholder: PropTypes.string,

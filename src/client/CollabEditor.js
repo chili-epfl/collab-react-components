@@ -1,7 +1,8 @@
 /**
  * Created by dario on 11.04.17.
  */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import StringBinding from 'sharedb-string-binding';
 import connection from './connection';

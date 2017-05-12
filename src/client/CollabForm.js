@@ -23,9 +23,10 @@ export default class CollabForm extends Component {
     super(props);
     this.state = {
       form: null,
-      nonCollabKeys: ['checkbox', 'checkbox2']
+      nonCollabKeys: null
     };
 
+    // We define our custom field for collaborative text (all strings)
     _.extend(this.props.fields, {
       StringField: CollabStringField,
     });
@@ -49,10 +50,17 @@ export default class CollabForm extends Component {
     form.on('del', del.bind(this));
 
     function load() {
-      // We save all non-collaborative keys TODO
+      // We save all non-collaborative keys
+      const nonCollabKeys = [];
+
+      Object.keys(this.props.schema.properties).forEach(key => {
+        if (this.props.schema.properties[key].type !== 'string') {
+          nonCollabKeys.push(key);
+        }
+      });
 
       // Form data available only when we are done loading the form
-      this.setState({form});
+      this.setState({form, nonCollabKeys});
     }
 
     function update(op, source) {
