@@ -7,6 +7,9 @@ import Form from 'react-jsonschema-form';
 import _ from 'underscore'
 import connection from './connection';
 import CollabStringField from './fields/CollabStringField';
+import CollabTextWidget from './widgets/CollabTextWidget';
+import CollabTextareaWidget from './widgets/CollabTextareaWidget';
+import CollabEmailWidget from './widgets/CollabEmailWidget';
 
 /**
  * Collaborative Form class.
@@ -29,6 +32,12 @@ export default class CollabForm extends Component {
     // We define our custom field for collaborative text (all strings)
     _.extend(this.props.fields, {
       StringField: CollabStringField,
+    });
+    // We define our custom widgets
+    _.extend(this.props.widgets, {
+      TextWidget: CollabTextWidget,
+      TextareaWidget: CollabTextareaWidget,
+      EmailWidget: CollabEmailWidget,
     });
   };
 

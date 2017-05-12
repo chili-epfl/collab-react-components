@@ -33,19 +33,20 @@ const options = {
 CollabServer.start(app, options);
 
 // Create the collection that will hold the shared data.
-const formModel = new CollabModel("forms");
+const formModel = new CollabModel('forms');
 
 // Define the schema of the data
 const schema = {
-  title: "My Collaborative form",
-  type: "object",
+  title: 'My Collaborative form',
+  type: 'object',
   properties: {
-    input: {type: "string", title: "Input"},
-    checkbox: {type: "boolean", title: "Checkbox"},
-    checkbox2: {type: "boolean", title: "Checkbox2"},
-    textarea: {type: "string", title: "Textarea", default: 'Default text'},
+    input: {type: 'string', title: 'Input'},
+    checkbox: {type: 'boolean', title: 'Checkbox'},
+    checkbox2: {type: 'boolean', title: 'Checkbox2'},
+    textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
+    password: {type: 'string', title: 'Password'},
   }
 };
 
 // Create the shared form data
-formModel.createForm("myForm", schema);
+formModel.createForm('myForm', schema);
