@@ -10,32 +10,20 @@ export default class App extends Component {
     super(props);
 
     this.schema = {
-      title: "My Collaborative form",
-      type: "object",
-      required: ["input", "textarea"],
+      title: 'My Collaborative form',
+      type: 'object',
+      required: ['input', 'textarea'],
       properties: {
-        input: {type: "string", title: "Input"},
-        checkbox: {type: "boolean", title: "Checkbox"},
-        textarea: {type: "string", title: "Textarea", default: 'Default text'},
+        input: {type: 'string', title: 'Input'},
+        checkbox: {type: 'boolean', title: 'Checkbox'},
+        textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
       }
     };
 
     this.uiSchema = {
-      input: {"ui:help": "Help text"},
-      textarea: {"ui:widget": "textarea", "ui:options": {rows: 8} },
+      input: {'ui:help': 'Help text'},
+      textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
     };
-  }
-
-  static onChange({formData}) {
-    console.log('onChange: ' + formData);
-  }
-
-  static onSubmit({formData}) {
-    console.log('onSubmit: ' + formData);
-  }
-
-  static onError(errors) {
-    console.log('onError: ' + errors);
   }
 
   render() {
@@ -50,9 +38,6 @@ export default class App extends Component {
           collectionName="forms"
           schema={this.schema}
           uiSchema={this.uiSchema}
-          onChange={App.onChange}
-          onSubmit={App.onSubmit}
-          onError={App.onError}
         />
       </div>
     );

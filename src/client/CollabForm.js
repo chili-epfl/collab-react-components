@@ -56,8 +56,7 @@ export default class CollabForm extends Component {
     }
 
     function update() {
-      console.log('updated');
-      this.setState({form: form});
+      //this.setState({form: form});
     }
 
     function del() {
@@ -73,7 +72,6 @@ export default class CollabForm extends Component {
       if (
         _.contains(this.state.nonCollabKeys, key) &&
         this.state.form.data[key] !== changeStatus.formData[key]) {
-        console.log(key);
         const op = [{ p: [key], od: null, oi: changeStatus.formData[key] }];
         this.state.form.submitOp(op, function(err) {
           if (err) throw err
@@ -85,6 +83,7 @@ export default class CollabForm extends Component {
   }
 
   render() {
+    console.log('In render');
     return (
       this.state.form &&
       <Form
