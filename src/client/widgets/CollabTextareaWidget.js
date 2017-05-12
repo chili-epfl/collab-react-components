@@ -1,7 +1,8 @@
 /**
  * Created by dario on 04.04.17.
  */
-import React, {PropTypes}  from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 function CollabTextareaWidget(props) {
   const {
@@ -18,13 +19,13 @@ function CollabTextareaWidget(props) {
     widgetRef
   } = props;
   const _onChange = ({ target: { value } }) => {
-    return onChange(value === "" ? options.emptyValue : value);
+    return onChange(value === '' ? options.emptyValue : value);
   };
   return (
     <textarea
       id={id}
       className="form-control"
-      value={typeof value === "undefined" ? "" : value}
+      value={typeof value === 'undefined' ? '' : value}
       placeholder={placeholder}
       required={required}
       disabled={disabled}
@@ -43,7 +44,7 @@ CollabTextareaWidget.defaultProps = {
   options: {},
 };
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   CollabTextareaWidget.propTypes = {
     schema: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

@@ -1,7 +1,8 @@
 /**
  * Created by dario on 04.04.17.
  */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import StringBinding from 'sharedb-string-binding';
 import CollabTextareaWidget from '../widgets/CollabTextareaWidget';
 import CollabTextWidget from '../widgets/CollabTextWidget';
@@ -12,13 +13,6 @@ import {
 } from 'react-jsonschema-form/lib/utils';
 
 class CollabStringField extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      form: this.props.formContext
-    }
-  }
-
   componentDidMount() {
     this.createBinding();
   }
@@ -28,13 +22,13 @@ class CollabStringField extends Component {
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.state.form, [this.props.name]);
+    this.binding = new StringBinding(this._widget, this.props.formContext, [this.props.name]);
     this.binding.setup();
   }
 
   destroyBinding() {
-    this.state.form.unsubscribe();
-    this.state.form.destroy();
+    this.props.formContext.unsubscribe();
+    this.props.formContext.destroy();
     this.binding.destroy();
   }
 

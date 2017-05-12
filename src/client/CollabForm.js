@@ -23,9 +23,10 @@ export default class CollabForm extends Component {
     super(props);
     this.state = {
       form: null,
-      nonCollabKeys: ['checkbox']
+      nonCollabKeys: null
     };
 
+    // We define our custom field for collaborative text (all strings)
     _.extend(this.props.fields, {
       StringField: CollabStringField,
     });
@@ -49,15 +50,25 @@ export default class CollabForm extends Component {
     form.on('del', del.bind(this));
 
     function load() {
-      // We save all non-collaborative keys TODO
+      // We save all non-collaborative keys
+      const nonCollabKeys = [];
+
+      Object.keys(this.props.schema.properties).forEach(key => {
+        if (this.props.schema.properties[key].type !== 'string') {
+          nonCollabKeys.push(key);
+        }
+      });
 
       // Form data available only when we are done loading the form
-      this.setState({form: form});
+      this.setState({form, nonCollabKeys});
     }
 
-    function update() {
-      console.log('updated');
-      this.setState({form: form});
+    function update(op, source) {
+      // We only update if we receive a modification from outside on a non collaborative field
+      const isNonCollab = _.contains(this.state.nonCollabKeys, op[0].p[0]);
+      if (!source && isNonCollab) {
+        this.setState({form});
+      }
     }
 
     function del() {
@@ -68,16 +79,17 @@ export default class CollabForm extends Component {
   }
 
   onChange(changeStatus) {
-    console.log(changeStatus);
     // We update every element that is non collaborative on onChange
-    _.each(this.state.nonCollabKeys, function(value) {
-      const op = [{p: [value], od: null, oi: changeStatus.formData[value]}];
-      this.state.form.submitOp(op, function(err) {
-        if (err) console.log(err);
-      })
-    }.bind(this));
+    Object.keys(changeStatus.formData).forEach(key => {
+      if (this.state.form.data[key] !== changeStatus.formData[key]) {
+        const op = [{ p: [key], od: null, oi: changeStatus.formData[key] }];
+        this.state.form.submitOp(op, function(err) {
+          if (err) throw err
+        });
+      }
+    });
 
-    this.props.onChange(changeStatus);
+    if (this.props.onChange) this.props.onChange(changeStatus);
   }
 
   render() {
