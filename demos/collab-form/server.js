@@ -40,11 +40,41 @@ const schema = {
   title: 'My Collaborative form',
   type: 'object',
   properties: {
-    input: {type: 'string', title: 'Input'},
-    checkbox: {type: 'boolean', title: 'Checkbox'},
-    checkbox2: {type: 'boolean', title: 'Checkbox2'},
-    textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
-    password: {type: 'string', title: 'Password'},
+    collab: {
+      type: 'boolean',
+      title: 'Collaborative?'
+    },
+    justify: {
+      type: 'boolean',
+      title: 'Students must justify their answers'
+    },
+    MCQ: {
+      title: 'MCQ',
+      type: 'array',
+      items: {
+        type: 'object',
+        title: 'New Question',
+        properties: {
+          question: {
+            type: 'string',
+            title: 'Question'
+          },
+          answers: {
+            type: 'array',
+            title: 'Possible answers',
+            items: {
+              type: 'object',
+              properties: {
+                answer: {
+                  type: 'string',
+                  title: 'Answer'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 };
 
