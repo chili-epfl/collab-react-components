@@ -91,8 +91,6 @@ export default class CollabForm extends Component {
     // We update every element that is non collaborative on onChange
     Object.keys(changeStatus.formData).forEach(key => {
       if (this.state.form.data.data[key] !== changeStatus.formData[key]) {
-        console.log(changeStatus.formData[key]);
-        console.log(this.state.form.data.data[key]);
         const op = [{ p: ['data', key], od: null, oi: changeStatus.formData[key] }];
         this.state.form.submitOp(op, function(err) {
           if (err) throw err
