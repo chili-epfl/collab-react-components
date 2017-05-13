@@ -9,18 +9,6 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.schema = {
-      title: 'My Collaborative form',
-      type: 'object',
-      required: ['input', 'textarea'],
-      properties: {
-        input: {type: 'string', title: 'Input', default: 'Default text'},
-        checkbox: {type: 'boolean', title: 'Checkbox'},
-        checkbox2: {type: 'boolean', title: 'Checkbox2'},
-        textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
-      }
-    };
-
     this.uiSchema = {
       input: {'ui:widget': 'uri'},
       textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
@@ -37,7 +25,6 @@ export default class App extends Component {
         <CollabForm
           id="myForm"
           collectionName="forms"
-          schema={this.schema}
           uiSchema={this.uiSchema}
         />
       </div>
