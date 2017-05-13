@@ -62,8 +62,8 @@ export default class CollabForm extends Component {
       // We save all non-collaborative keys
       const nonCollabKeys = [];
 
-      Object.keys(this.props.schema.properties).forEach(key => {
-        if (this.props.schema.properties[key].type !== 'string') {
+      Object.keys(form.data.schema.properties).forEach(key => {
+        if (form.data.schema.properties[key].type !== 'string') {
           nonCollabKeys.push(key);
         }
       });
@@ -74,7 +74,7 @@ export default class CollabForm extends Component {
 
     function update(op, source) {
       // We only update if we receive a modification from outside on a non collaborative field
-      const isNonCollab = _.contains(this.state.nonCollabKeys, op[0].p[0]);
+      const isNonCollab = _.contains(this.state.nonCollabKeys, op[0].p[1]);
       if (!source && isNonCollab) {
         this.setState({form});
       }
@@ -90,8 +90,8 @@ export default class CollabForm extends Component {
   onChange(changeStatus) {
     // We update every element that is non collaborative on onChange
     Object.keys(changeStatus.formData).forEach(key => {
-      if (this.state.form.data[key] !== changeStatus.formData[key]) {
-        const op = [{ p: [key], od: null, oi: changeStatus.formData[key] }];
+      if (this.state.form.data.data[key] !== changeStatus.formData[key]) {
+        const op = [{ p: ['data', key], od: null, oi: changeStatus.formData[key] }];
         this.state.form.submitOp(op, function(err) {
           if (err) throw err
         });
@@ -106,9 +106,10 @@ export default class CollabForm extends Component {
       this.state.form &&
       <Form
         {...this.props}
+        schema={this.state.form.data.schema}
+        formData={this.state.form.data.data}
         onChange={this.onChange.bind(this)}
         formContext={this.state.form}
-        formData={this.state.form.data}
       />
     )
   }

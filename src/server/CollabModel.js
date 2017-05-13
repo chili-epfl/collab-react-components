@@ -54,20 +54,21 @@ export default class CollabModel {
           let prop = {};
           // If it is a String, we create an empty string if the default value is empty.
           if (value.type === 'string') {
-            prop[key] = typeof(value.default) === 'undefined' ? '' : value.default ;
+            prop[key] = typeof(value.default) === 'undefined' ? '' : value.default;
           } else {
-            prop[key] = typeof(value.default) === 'undefined' ? null : value.default ;
+            prop[key] = typeof(value.default) === 'undefined' ? null : value.default;
           }
 
           _.extend(data, prop);
         });
 
-        doc.create(data, function (err) {
+        doc.create({schema, data}, function (err) {
           if (err) throw err;
           return doc;
         });
       }
     });
+
     return doc;
   }
 

@@ -29,7 +29,7 @@ class CollabStringField extends Component {
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.props.formContext, [this.props.name]);
+    this.binding = new StringBinding(this._widget, this.props.formContext, ['data', this.props.name]);
     this.binding.setup();
   }
 
