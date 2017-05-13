@@ -3,9 +3,8 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'underscore';
 import StringBinding from 'sharedb-string-binding';
-
+import { isAvailableWidget } from '../utils';
 import {
   getWidget,
   getUiOptions,
@@ -17,9 +16,8 @@ class CollabStringField extends Component {
   constructor(props) {
     super(props);
 
-    const widgets = ['text', 'textarea', 'uri'];
     const { widget = 'text' } = getUiOptions(this.props.uiSchema);
-    this.isAvailableWidget = _.contains(widgets, widget);
+    this.isAvailableWidget = isAvailableWidget(widget);
   }
 
   componentDidMount() {
@@ -39,6 +37,14 @@ class CollabStringField extends Component {
     this.props.formContext.unsubscribe();
     this.props.formContext.destroy();
     this.binding.destroy();
+  }
+
+  static getWidget(schema, widget, widgets) {
+    if (widget === 'password') {
+      throw Error('You should not use the widget "password" within a collaborative form');
+    } else {
+      return getWidget(schema, widget, widgets)
+    }
   }
 
   render() {
@@ -65,7 +71,7 @@ class CollabStringField extends Component {
       uiSchema
     );
 
-    const Widget = getWidget(schema, widget, widgets);
+    const Widget = CollabStringField.getWidget(schema, widget, widgets);
 
     const ref = {};
     if (this.isAvailableWidget) ref.widgetRef = w => this._widget = w;

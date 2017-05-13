@@ -18,14 +18,12 @@ export default class App extends Component {
         checkbox: {type: 'boolean', title: 'Checkbox'},
         checkbox2: {type: 'boolean', title: 'Checkbox2'},
         textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
-        password: {type: 'string', title: 'Password'},
       }
     };
 
     this.uiSchema = {
       input: {'ui:widget': 'uri'},
       textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
-      password:{'ui:widget': 'password'}
     };
   }
 
