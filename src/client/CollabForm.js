@@ -9,7 +9,7 @@ import connection from './connection';
 import CollabStringField from './fields/CollabStringField';
 import CollabTextWidget from './widgets/CollabTextWidget';
 import CollabTextareaWidget from './widgets/CollabTextareaWidget';
-import CollabEmailWidget from './widgets/CollabEmailWidget';
+import CollabURLWidget from './widgets/CollabURLWidget';
 
 /**
  * Collaborative Form class.
@@ -37,7 +37,7 @@ export default class CollabForm extends Component {
     _.extend(this.props.widgets, {
       TextWidget: CollabTextWidget,
       TextareaWidget: CollabTextareaWidget,
-      EmailWidget: CollabEmailWidget,
+      URLWidget: CollabURLWidget,
     });
   };
 

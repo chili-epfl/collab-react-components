@@ -17,7 +17,7 @@ class CollabStringField extends Component {
   constructor(props) {
     super(props);
 
-    const widgets = ['text', 'textarea', 'email', 'uri'];
+    const widgets = ['text', 'textarea', 'uri'];
     const { widget = 'text' } = getUiOptions(this.props.uiSchema);
     this.isAvailableWidget = _.contains(widgets, widget);
   }
@@ -69,6 +69,8 @@ class CollabStringField extends Component {
 
     const ref = {};
     if (this.isAvailableWidget) ref.widgetRef = w => this._widget = w;
+
+    if (options.emptyValue === undefined) options.emptyValue = '';
 
     return (
       <Widget
