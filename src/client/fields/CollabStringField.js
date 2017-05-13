@@ -4,21 +4,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StringBinding from 'sharedb-string-binding';
-import CollabTextareaWidget from '../widgets/CollabTextareaWidget';
-import CollabTextWidget from '../widgets/CollabTextWidget';
-
+import { isAvailableWidget } from '../utils';
 import {
+  getWidget,
   getUiOptions,
+  optionsList,
   getDefaultRegistry,
 } from 'react-jsonschema-form/lib/utils';
 
 class CollabStringField extends Component {
+  constructor(props) {
+    super(props);
+
+    const { widget = 'text' } = getUiOptions(this.props.uiSchema);
+    this.isAvailableWidget = isAvailableWidget(widget);
+  }
+
   componentDidMount() {
-    this.createBinding();
+    if (this.isAvailableWidget) this.createBinding();
   }
 
   componentWillUnmount() {
-    this.destroyBinding();
+    if (this.isAvailableWidget) this.destroyBinding();
   }
 
   createBinding() {
@@ -32,14 +39,11 @@ class CollabStringField extends Component {
     this.binding.destroy();
   }
 
-  static getWidget(widget) {
-    switch (widget) {
-      case 'text':
-        return CollabTextWidget;
-      case 'textarea':
-        return CollabTextareaWidget;
-      default:
-        console.log('Unsupported collaborative type');
+  static getWidget(schema, widget, widgets) {
+    if (widget === 'password') {
+      throw Error('You should not use the widget "password" within a collaborative form');
+    } else {
+      return getWidget(schema, widget, widgets)
     }
   }
 
@@ -54,22 +58,29 @@ class CollabStringField extends Component {
       disabled,
       readonly,
       autofocus,
-      registry,
       onChange,
       onBlur,
+      registry = getDefaultRegistry()
     } = this.props;
 
-    const { title } = schema;
-    const { formContext } = registry;
-    const defaultWidget = 'text';
+    const { title, format } = schema;
+    const { widgets, formContext } = registry;
+    const enumOptions = Array.isArray(schema.enum) && optionsList(schema);
+    const defaultWidget = format || (enumOptions ? 'select' : 'text');
     const { widget = defaultWidget, placeholder = '', ...options } = getUiOptions(
       uiSchema
     );
-    const Widget = CollabStringField.getWidget(widget);
+
+    const Widget = CollabStringField.getWidget(schema, widget, widgets);
+
+    const ref = {};
+    if (this.isAvailableWidget) ref.widgetRef = w => this._widget = w;
+
+    if (options.emptyValue === undefined) options.emptyValue = '';
 
     return (
       <Widget
-        options={{ ...options }}
+        options={{ ...options, enumOptions }}
         schema={schema}
         id={idSchema && idSchema.$id}
         label={title === undefined ? name : title}
@@ -83,7 +94,7 @@ class CollabStringField extends Component {
         autofocus={autofocus}
         registry={registry}
         placeholder={placeholder}
-        widgetRef={w => this._widget = w}
+        { ...ref }
       />
     );
 
