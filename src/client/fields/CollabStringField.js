@@ -25,6 +25,7 @@ class CollabStringField extends Component {
   }
 
   componentWillUnmount() {
+    console.log('test');
     if (this.isAvailableWidget) this.destroyBinding();
   }
 
@@ -34,8 +35,6 @@ class CollabStringField extends Component {
   }
 
   destroyBinding() {
-    this.props.formContext.unsubscribe();
-    this.props.formContext.destroy();
     this.binding.destroy();
   }
 

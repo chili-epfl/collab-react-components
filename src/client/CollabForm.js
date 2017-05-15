@@ -45,6 +45,14 @@ export default class CollabForm extends Component {
     this.subscribeToForm(this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // We should unsubscribe from the current form and subscribe to the new one
+    if (!_.isEqual(this.props, nextProps)) {
+      this.unsubscribe();
+      this.subscribeToForm(nextProps);
+    }
+  }
+
   subscribeToForm(props) {
     const form = connection.get('collab_data_' + props.collectionName, props.id);
     form.subscribe((err) => {
@@ -99,6 +107,11 @@ export default class CollabForm extends Component {
     });
 
     if (this.props.onChange) this.props.onChange(changeStatus);
+  }
+
+  unsubscribe() {
+    this.state.form.unsubscribe();
+    this.state.form.destroy();
   }
 
   render() {
