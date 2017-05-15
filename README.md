@@ -1,4 +1,4 @@
-# collab-meteor
+# collab-web-forms
 
 Database backend and React components for smooth and quick integration of a real-time collaborative form using React.
 
