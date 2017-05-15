@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 CollabServer.start(app);
 
 // Create the collection that will hold the shared data.
-const formModel = new CollabModel('documents');
+const model = new CollabModel('documents');
 
 // Create the shared form data
-formModel.create('doc1');
+model.create('doc1');
