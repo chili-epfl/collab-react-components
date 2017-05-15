@@ -3,18 +3,13 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 import StringBinding from 'sharedb-string-binding';
 import connection from './connection';
 
 /**
- * Collaborative Editor class.
+ * Collaborative Editor.
  *
- * Creates a new collaborative editor fetching data from the ShareDB collection and displaying it in a <textarea/>
- * The editor takes as props:
- * - id: ID of the document to fetch
- * - collectionName: The name of the collection
- * - classname: Optional classname to apply to the textarea
+ * Creates a new collaborative editor fetching data from the server and displaying it in a <textarea/>
  */
 export default class CollabEditor extends Component {
   constructor(props) {
@@ -29,54 +24,49 @@ export default class CollabEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props, nextProps)) {
+    if (nextProps.id !== this.props.id || nextProps.collectionName !== this.props.collectionName) {
       this.destroyBinding();
       this.subscribeToDoc(nextProps);
     }
+  }
+
+  subscribeToDoc(props) {
+    const doc = connection.get('collab_data_' + props.collectionName, props.id);
+    doc.subscribe((err) => {
+      if (err) console.log(err);
+      if (doc.type === null) {
+        throw Error('No document exist with id: ' + props.id);
+      }
+    });
+
+    doc.on('load', load.bind(this));
+    doc.on('del', del.bind(this));
+
+    function load() {
+      this.setState({doc}, this.createBinding);
+    }
+
+    function del() {
+      this.destroyBinding();
+    }
+  }
+
+  createBinding() {
+    this.binding = new StringBinding(this._textarea, this.state.doc);
+    this.binding.setup();
   }
 
   destroyBinding() {
     this.state.doc.unsubscribe();
     this.state.doc.destroy();
     this.binding.destroy();
-  }
-
-  subscribeToDoc(props) {
-    const comp = this;
-    const doc = connection.get('collab_data_' + props.collectionName, props.id);
-    doc.subscribe((err) => {
-      if (err) console.log(err);
-      if (doc.type === null) {
-        console.log('No document exist with id: ' + props.id);
-      }
-    });
-
-    doc.on('load', load);
-    doc.on('del', del);
-
-    function load() {
-      comp.setState({doc: doc}, comp.createBinding);
-    }
-
-    function del() {
-      comp.destroyBinding();
-    }
-  }
-
-  createBinding() {
-    const textArea = ReactDOM.findDOMNode(this._textarea);
-    this.binding = new StringBinding(textArea, this.state.doc);
-    this.binding.setup();
-  }
-
-  componentWillUnmount() {
-    this.destroyBinding();
+    this.setState({doc: null});
   }
 
   render() {
     return (
       <textarea
-        onChange={this._onChange}
+        onChange={this.props.onChange}
         ref={(ref) => this._textarea = ref}
         className={this.props.classNames}
         rows={this.props.rows}
