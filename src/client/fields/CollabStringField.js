@@ -34,8 +34,6 @@ class CollabStringField extends Component {
   }
 
   destroyBinding() {
-    this.props.formContext.unsubscribe();
-    this.props.formContext.destroy();
     this.binding.destroy();
   }
 

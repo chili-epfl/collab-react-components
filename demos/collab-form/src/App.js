@@ -9,10 +9,33 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.uiSchema = {
-      input: {'ui:widget': 'uri'},
-      textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
+    this.state = {
+      id: 'form1',
+      uiSchema: {
+        input: {'ui:widget': 'uri'},
+        textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
+      }
     };
+  }
+
+  onChangeForm() {
+    if (this.state.id === 'form1') {
+      this.setState({
+        id: 'form2',
+        uiSchema: {
+          field3: {'ui:widget': 'textarea', 'ui:options': {rows: 8}},
+          field4: {'ui:widget': 'range'},
+        }
+      })
+    } else {
+      this.setState({
+        id: 'form1',
+        uiSchema: {
+          input: {'ui:widget': 'uri'},
+          textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
+        }
+      })
+    }
   }
 
   render() {
@@ -23,10 +46,12 @@ export default class App extends Component {
         </header>
 
         <CollabForm
-          id="myForm"
+          id={this.state.id}
           collectionName="forms"
-          uiSchema={this.uiSchema}
+          uiSchema={this.state.uiSchema}
         />
+
+        <button onClick={this.onChangeForm.bind(this)}>Switch form</button>
       </div>
     );
   }

@@ -45,12 +45,20 @@ export default class CollabForm extends Component {
     this.subscribeToForm(this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    // We should unsubscribe from the current form and subscribe to the new one
+    if (nextProps.id !== this.props.id || nextProps.collectionName !== this.props.collectionName) {
+      this.unsubscribe();
+      this.subscribeToForm(nextProps);
+    }
+  }
+
   subscribeToForm(props) {
     const form = connection.get('collab_data_' + props.collectionName, props.id);
     form.subscribe((err) => {
       if (err) console.log(err);
       if (form.type === null) {
-        console.log('No form data exist with id: ' + props.id);
+        throw Error('No form exists with id: ' + props.id);
       }
     });
 
@@ -99,6 +107,12 @@ export default class CollabForm extends Component {
     });
 
     if (this.props.onChange) this.props.onChange(changeStatus);
+  }
+
+  unsubscribe() {
+    this.state.form.unsubscribe();
+    this.state.form.destroy();
+    this.setState({form:null});
   }
 
   render() {
