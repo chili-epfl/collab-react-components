@@ -25,6 +25,7 @@ function CollabBaseInput(props) {
   const _onChange = ({ target: { value } }) => {
     return props.onChange(value === '' ? options.emptyValue : value);
   };
+
   return (
     <input
       className="form-control"

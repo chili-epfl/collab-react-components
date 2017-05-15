@@ -47,7 +47,7 @@ export default class CollabForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     // We should unsubscribe from the current form and subscribe to the new one
-    if (!_.isEqual(this.props, nextProps)) {
+    if (nextProps.id !== this.props.id || nextProps.collectionName !== this.props.collectionName) {
       this.unsubscribe();
       this.subscribeToForm(nextProps);
     }
@@ -58,7 +58,7 @@ export default class CollabForm extends Component {
     form.subscribe((err) => {
       if (err) console.log(err);
       if (form.type === null) {
-        console.log('No form data exist with id: ' + props.id);
+        throw Error('No form exists with id: ' + props.id);
       }
     });
 
@@ -112,6 +112,7 @@ export default class CollabForm extends Component {
   unsubscribe() {
     this.state.form.unsubscribe();
     this.state.form.destroy();
+    this.setState({form:null});
   }
 
   render() {

@@ -23,8 +23,8 @@ export default class App extends Component {
       this.setState({
         id: 'form2',
         uiSchema: {
-          field1: {'ui:widget': 'uri'},
           field3: {'ui:widget': 'textarea', 'ui:options': {rows: 8}},
+          field4: {'ui:widget': 'range'},
         }
       })
     } else {
