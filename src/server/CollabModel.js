@@ -1,5 +1,5 @@
-import CollabServer from "./CollabServer";
-import _ from "underscore";
+import CollabServer from './CollabServer';
+import _ from 'underscore';
 
 export default class CollabModel {
   /**
@@ -9,12 +9,12 @@ export default class CollabModel {
     const backend = CollabServer.backend;
     if (backend === null) {
       throw new Error(
-        "CollabModel: You should start the CollabServer before using the model."
+        'CollabModel: You should start the CollabServer before using the model.'
       );
     }
 
     this.connection = backend.connect();
-    this.collectionName = "collab_data_" + collectionName;
+    this.collectionName = 'collab_data_' + collectionName;
   }
 
   /**
@@ -24,7 +24,7 @@ export default class CollabModel {
    * @param {String} data The document initial data string.
    * @returns {Doc} The Document created
    */
-  create(id, data = "") {
+  create(id, data = '') {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch(err => {
       if (err) throw err;
@@ -44,12 +44,12 @@ export default class CollabModel {
    * @param {String} data The document initial data string.
    * @returns {Doc} The Document created
    */
-  createRichText(id, data = "") {
+  createRichText(id, data = '') {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch(err => {
       if (err) throw err;
       if (doc.type === null) {
-        doc.create([{ insert: data }], "rich-text", function(err) {
+        doc.create([{ insert: data }], 'rich-text', function(err) {
           if (err) throw err;
           return doc;
         });
@@ -77,12 +77,12 @@ export default class CollabModel {
         _.each(schema.properties, function(value, key) {
           let prop = {};
           // If it is a String, we create an empty string if the default value is empty.
-          if (value.type === "string") {
-            prop[key] = typeof value.default === "undefined"
-              ? ""
+          if (value.type === 'string') {
+            prop[key] = typeof value.default === 'undefined'
+              ? ''
               : value.default;
           } else {
-            prop[key] = typeof value.default === "undefined"
+            prop[key] = typeof value.default === 'undefined'
               ? null
               : value.default;
           }

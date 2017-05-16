@@ -1,10 +1,10 @@
 /**
  * Created by dario on 11.04.17.
  */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import StringBinding from "sharedb-string-binding";
-import connection from "./connection";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import StringBinding from 'sharedb-string-binding';
+import connection from './connection';
 
 /**
  * Collaborative Editor.
@@ -34,16 +34,16 @@ export default class CollabEditor extends Component {
   }
 
   subscribeToDoc(props) {
-    const doc = connection.get("collab_data_" + props.collectionName, props.id);
+    const doc = connection.get('collab_data_' + props.collectionName, props.id);
     doc.subscribe(err => {
       if (err) console.log(err);
       if (doc.type === null) {
-        throw Error("No document exist with id: " + props.id);
+        throw Error('No document exist with id: ' + props.id);
       }
     });
 
-    doc.on("load", load.bind(this));
-    doc.on("del", del.bind(this));
+    doc.on('load', load.bind(this));
+    doc.on('del', del.bind(this));
 
     function load() {
       this.setState({ doc }, this.createBinding);
@@ -79,7 +79,7 @@ export default class CollabEditor extends Component {
 }
 
 CollabEditor.defaultProps = {
-  classNames: "form-control",
+  classNames: 'form-control',
 };
 
 CollabEditor.PropTypes = {

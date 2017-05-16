@@ -2,14 +2,14 @@
  * Created by dario on 13.04.17.
  */
 
-import React, { Component } from "react";
-import Form from "react-jsonschema-form";
-import _ from "underscore";
-import connection from "./connection";
-import CollabStringField from "./fields/CollabStringField";
-import CollabTextWidget from "./widgets/CollabTextWidget";
-import CollabTextareaWidget from "./widgets/CollabTextareaWidget";
-import CollabURLWidget from "./widgets/CollabURLWidget";
+import React, { Component } from 'react';
+import Form from 'react-jsonschema-form';
+import _ from 'underscore';
+import connection from './connection';
+import CollabStringField from './fields/CollabStringField';
+import CollabTextWidget from './widgets/CollabTextWidget';
+import CollabTextareaWidget from './widgets/CollabTextareaWidget';
+import CollabURLWidget from './widgets/CollabURLWidget';
 
 /**
  * Collaborative Form class.
@@ -58,26 +58,26 @@ export default class CollabForm extends Component {
 
   subscribeToForm(props) {
     const form = connection.get(
-      "collab_data_" + props.collectionName,
+      'collab_data_' + props.collectionName,
       props.id
     );
     form.subscribe(err => {
       if (err) console.log(err);
       if (form.type === null) {
-        throw Error("No form exists with id: " + props.id);
+        throw Error('No form exists with id: ' + props.id);
       }
     });
 
-    form.on("load", load.bind(this));
-    form.on("op", update.bind(this));
-    form.on("del", del.bind(this));
+    form.on('load', load.bind(this));
+    form.on('op', update.bind(this));
+    form.on('del', del.bind(this));
 
     function load() {
       // We save all non-collaborative keys
       const nonCollabKeys = [];
 
       Object.keys(form.data.schema.properties).forEach(key => {
-        if (form.data.schema.properties[key].type !== "string") {
+        if (form.data.schema.properties[key].type !== 'string') {
           nonCollabKeys.push(key);
         }
       });
@@ -106,7 +106,7 @@ export default class CollabForm extends Component {
     Object.keys(changeStatus.formData).forEach(key => {
       if (this.state.form.data.data[key] !== changeStatus.formData[key]) {
         const op = [
-          { p: ["data", key], od: null, oi: changeStatus.formData[key] },
+          { p: ['data', key], od: null, oi: changeStatus.formData[key] },
         ];
         this.state.form.submitOp(op, function(err) {
           if (err) throw err;
