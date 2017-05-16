@@ -24,10 +24,10 @@
   ],
   "options": {
     "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js",
-    "prettier": "--jsx-bracket-same-line --trailing-comma es5 --semi"
+    "prettier": "--single-quote --jsx-bracket-same-line --trailing-comma es5 --semi"
   },
   "scripts": {
-    "cs-format": "prettier $npm_package_options_prettier '{src}/**/*.js' --write",
+    "cs-format": "prettier $npm_package_options_prettier ./src/**/*.js --write",
     "precommit": "lint-staged",
     "prepublish": "rimraf ./dist && babel --plugins transform-es2015-modules-umd src --ignore __tests__ --out-dir ./dist",
     "lint": "eslint ./src",

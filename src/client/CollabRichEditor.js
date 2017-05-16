@@ -1,10 +1,10 @@
 /**
  * Created by dario on 11.04.17.
  */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ReactQuill from 'react-quill';
-import connection from './connection';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ReactQuill from "react-quill";
+import connection from "./connection";
 
 /**
  * Collaborative Rich Editor.
@@ -15,11 +15,8 @@ export default class CollabRichEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      doc: null
+      doc: null,
     };
-
-    const OPTION = ['printWidth', 'tabWidth', 'singleQuote', 'trailingComma', 'bracketSpacing', 'jsxBracketSameLine', 'parser', 'semi', 'useTabs', 'doc'];
-    const afain = 0;
   }
 
   componentWillMount() {
@@ -27,27 +24,30 @@ export default class CollabRichEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.id !== this.props.id || nextProps.collectionName !== this.props.collectionName) {
+    if (
+      nextProps.id !== this.props.id ||
+      nextProps.collectionName !== this.props.collectionName
+    ) {
       this.destroy();
       this.subscribeToDoc(nextProps);
     }
   }
 
   subscribeToDoc(props) {
-    const doc = connection.get('collab_data_' + props.collectionName, props.id);
-    doc.subscribe((err) => {
+    const doc = connection.get("collab_data_" + props.collectionName, props.id);
+    doc.subscribe(err => {
       if (err) throw err;
       if (doc.type === null) {
-        throw Error('No document exist with id: ' + props.id);
+        throw Error("No document exist with id: " + props.id);
       }
     });
 
-    doc.on('load', load.bind(this));
-    doc.on('op', update.bind(this));
-    doc.on('del', del.bind(this));
+    doc.on("load", load.bind(this));
+    doc.on("op", update.bind(this));
+    doc.on("del", del.bind(this));
 
     function load() {
-      this.setState({doc});
+      this.setState({ doc });
       this._editor.getEditor().setContents(doc.data);
     }
 
@@ -67,16 +67,17 @@ export default class CollabRichEditor extends Component {
   destroy() {
     this.state.doc.unsubscribe();
     this.state.doc.destroy();
-    this.setState({doc: null});
+    this.setState({ doc: null });
   }
 
   handleChange(content, delta, source, editor) {
     // If we are the one making the change
-    if (source === 'user') {
+    if (source === "user") {
       this.state.doc.submitOp(delta);
     }
 
-    if (this.props.onChange) this.props.onChange(content, delta, source, editor);
+    if (this.props.onChange)
+      this.props.onChange(content, delta, source, editor);
   }
 
   render() {
@@ -84,7 +85,7 @@ export default class CollabRichEditor extends Component {
       <ReactQuill
         {...this.props}
         onChange={this.handleChange.bind(this)}
-        ref={(ref) => this._editor = ref}
+        ref={ref => (this._editor = ref)}
       />
     );
   }
@@ -93,5 +94,5 @@ export default class CollabRichEditor extends Component {
 CollabRichEditor.PropTypes = {
   docId: PropTypes.string.isRequired,
   collectionName: PropTypes.string.isRequired,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };

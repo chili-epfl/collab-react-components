@@ -1,10 +1,10 @@
 /**
  * Created by dario on 11.04.17.
  */
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import StringBinding from 'sharedb-string-binding';
-import connection from './connection';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import StringBinding from "sharedb-string-binding";
+import connection from "./connection";
 
 /**
  * Collaborative Editor.
@@ -15,7 +15,7 @@ export default class CollabEditor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      doc: null
+      doc: null,
     };
   }
 
@@ -24,26 +24,29 @@ export default class CollabEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.id !== this.props.id || nextProps.collectionName !== this.props.collectionName) {
+    if (
+      nextProps.id !== this.props.id ||
+      nextProps.collectionName !== this.props.collectionName
+    ) {
       this.destroyBinding();
       this.subscribeToDoc(nextProps);
     }
   }
 
   subscribeToDoc(props) {
-    const doc = connection.get('collab_data_' + props.collectionName, props.id);
-    doc.subscribe((err) => {
+    const doc = connection.get("collab_data_" + props.collectionName, props.id);
+    doc.subscribe(err => {
       if (err) console.log(err);
       if (doc.type === null) {
-        throw Error('No document exist with id: ' + props.id);
+        throw Error("No document exist with id: " + props.id);
       }
     });
 
-    doc.on('load', load.bind(this));
-    doc.on('del', del.bind(this));
+    doc.on("load", load.bind(this));
+    doc.on("del", del.bind(this));
 
     function load() {
-      this.setState({doc}, this.createBinding);
+      this.setState({ doc }, this.createBinding);
     }
 
     function del() {
@@ -60,14 +63,14 @@ export default class CollabEditor extends Component {
     this.state.doc.unsubscribe();
     this.state.doc.destroy();
     this.binding.destroy();
-    this.setState({doc: null});
+    this.setState({ doc: null });
   }
 
   render() {
     return (
       <textarea
         onChange={this.props.onChange}
-        ref={(ref) => this._textarea = ref}
+        ref={ref => (this._textarea = ref)}
         className={this.props.classNames}
         rows={this.props.rows}
       />
@@ -76,7 +79,7 @@ export default class CollabEditor extends Component {
 }
 
 CollabEditor.defaultProps = {
-  classNames: 'form-control'
+  classNames: "form-control",
 };
 
 CollabEditor.PropTypes = {
@@ -84,5 +87,5 @@ CollabEditor.PropTypes = {
   collectionName: PropTypes.string.isRequired,
   className: PropTypes.string,
   rows: PropTypes.number,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };

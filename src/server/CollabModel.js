@@ -1,5 +1,5 @@
-import CollabServer from './CollabServer';
-import _ from 'underscore';
+import CollabServer from "./CollabServer";
+import _ from "underscore";
 
 export default class CollabModel {
   /**
@@ -8,11 +8,13 @@ export default class CollabModel {
   constructor(collectionName) {
     const backend = CollabServer.backend;
     if (backend === null) {
-      throw new Error('CollabModel: You should start the CollabServer before using the model.');
+      throw new Error(
+        "CollabModel: You should start the CollabServer before using the model."
+      );
     }
 
     this.connection = backend.connect();
-    this.collectionName = 'collab_data_' + collectionName;
+    this.collectionName = "collab_data_" + collectionName;
   }
 
   /**
@@ -22,12 +24,12 @@ export default class CollabModel {
    * @param {String} data The document initial data string.
    * @returns {Doc} The Document created
    */
-  create(id, data = '') {
+  create(id, data = "") {
     const doc = this.connection.get(this.collectionName, id);
-    doc.fetch((err) => {
+    doc.fetch(err => {
       if (err) throw err;
       if (doc.type === null) {
-        doc.create(data, function (err) {
+        doc.create(data, function(err) {
           if (err) throw err;
         });
       }
@@ -42,12 +44,12 @@ export default class CollabModel {
    * @param {String} data The document initial data string.
    * @returns {Doc} The Document created
    */
-  createRichText(id, data = '') {
+  createRichText(id, data = "") {
     const doc = this.connection.get(this.collectionName, id);
-    doc.fetch((err) => {
+    doc.fetch(err => {
       if (err) throw err;
       if (doc.type === null) {
-        doc.create([{insert: data}], 'rich-text', function (err) {
+        doc.create([{ insert: data }], "rich-text", function(err) {
           if (err) throw err;
           return doc;
         });
@@ -64,27 +66,31 @@ export default class CollabModel {
    * @param {Object} schema The form schema used to generate the data object
    * @returns {Doc} The Form created
    */
-  createForm(id, schema={}) {
+  createForm(id, schema = {}) {
     const doc = this.connection.get(this.collectionName, id);
-    doc.fetch((err) => {
+    doc.fetch(err => {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
         let data = {};
 
-        _.each(schema.properties, function (value, key) {
+        _.each(schema.properties, function(value, key) {
           let prop = {};
           // If it is a String, we create an empty string if the default value is empty.
-          if (value.type === 'string') {
-            prop[key] = typeof(value.default) === 'undefined' ? '' : value.default;
+          if (value.type === "string") {
+            prop[key] = typeof value.default === "undefined"
+              ? ""
+              : value.default;
           } else {
-            prop[key] = typeof(value.default) === 'undefined' ? null : value.default;
+            prop[key] = typeof value.default === "undefined"
+              ? null
+              : value.default;
           }
 
           _.extend(data, prop);
         });
 
-        doc.create({schema, data}, function (err) {
+        doc.create({ schema, data }, function(err) {
           if (err) throw err;
           return doc;
         });
@@ -102,7 +108,7 @@ export default class CollabModel {
    */
   remove(id) {
     const doc = this.connection.get(this.collectionName, id);
-    doc.subscribe((err) => {
+    doc.subscribe(err => {
       if (err) throw err;
       doc.del();
     });
