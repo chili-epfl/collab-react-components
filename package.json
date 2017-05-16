@@ -37,7 +37,7 @@
     "test-watch": "npm run testonly -- --watch --watch-extensions js"
   },
   "lint-staged": {
-    "{src}/**/*.js": [
+    "./src/**/*.js": [
       "npm run lint",
       "npm run cs-format",
       "git add"
