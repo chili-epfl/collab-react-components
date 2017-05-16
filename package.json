@@ -1,7 +1,7 @@
 {
   "name": "collab-web-forms",
   "version": "0.0.0",
-  "description": "A React Component for building collaborative editors and Web forms from JSON Schema",
+  "description": "A React Component for building rich collaborative editors and Web forms from JSON Schema",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/darioAnongba/collab-web-forms.git"
@@ -17,8 +17,10 @@
     "sharedb",
     "collaborative editor",
     "collaborative form",
-    "json-schema",
-    "react-jsonschema-form"
+    "collaborative rich editor",
+    "react-jsonschema-form",
+    "quill",
+    "react-quill"
   ],
   "options": {
     "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js"
@@ -62,7 +64,6 @@
     "babel-runtime": "^6.6.1",
     "http": "0.0.0",
     "prop-types": "^15.5.9",
-    "quill": "^1.2.4",
     "react-jsonschema-form": "^0.48.2",
     "react-quill": "^1.0.0-rc.2",
     "rich-text": "^3.1.0",
