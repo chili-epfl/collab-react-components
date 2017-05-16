@@ -77,6 +77,7 @@ export default class CollabRichEditor extends Component {
   }
 
   render() {
+    console.log('Insire render');
     return (
       <ReactQuill
         {...this.props}
