@@ -23,15 +23,25 @@
     "react-quill"
   ],
   "options": {
-    "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js"
+    "mocha": "--require scripts/mocha_runner src/**/__tests__/**/*.js",
+    "prettier": "--jsx-bracket-same-line --trailing-comma es5 --semi"
   },
   "scripts": {
-    "prepublish": "babel --plugins transform-es2015-modules-umd src --ignore __tests__ --out-dir ./dist",
-    "lint": "eslint ./src",
-    "lintfix": "eslint ./src --fix",
+    "cs-format": "prettier $npm_package_options_prettier '{src,demos}/**/*.js' --write",
+    "precommit": "lint-staged",
+    "prepublish": "rimraf ./dist && babel --plugins transform-es2015-modules-umd src --ignore __tests__ --out-dir ./dist",
+    "lint": "eslint ./src ./demos",
+    "lintfix": "eslint ./src ./demos --fix",
     "testonly": "mocha $npm_package_options_mocha",
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js"
+  },
+  "lint-staged": {
+    "{src,demos}/**/*.js": [
+      "npm run lint",
+      "npm run cs-format",
+      "git add"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",
@@ -55,6 +65,7 @@
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
     "rich-text": "^3.1.0",
+    "rimraf": "^2.6.1",
     "sinon": "^1.17.3"
   },
   "peerDependencies": {
