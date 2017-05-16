@@ -4,5 +4,6 @@
 
 import CollabForm from './CollabForm';
 import CollabEditor from './CollabEditor';
+import CollabRichEditor from './CollabRichEditor';
 
-export { CollabForm, CollabEditor };
+export { CollabForm, CollabEditor, CollabRichEditor };
