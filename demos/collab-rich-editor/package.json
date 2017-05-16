@@ -7,7 +7,8 @@
     "collab-web-forms": "file:///home/dario/Documents/semester_project/collab-web-forms/collab-web-forms-0.0.0.tgz",
     "quill": "^1.2.4",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-quill": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "express": "^4.15.2",

@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import StringBinding from 'sharedb-string-binding';
+import ReactQuill from 'react-quill';
 import connection from './connection';
 
 /**
@@ -25,7 +25,7 @@ export default class CollabRichEditor extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.id !== this.props.id || nextProps.collectionName !== this.props.collectionName) {
-      this.destroyBinding();
+      this.destroy();
       this.subscribeToDoc(nextProps);
     }
   }
@@ -33,51 +33,64 @@ export default class CollabRichEditor extends Component {
   subscribeToDoc(props) {
     const doc = connection.get('collab_data_' + props.collectionName, props.id);
     doc.subscribe((err) => {
-      if (err) console.log(err);
+      if (err) throw err;
       if (doc.type === null) {
         throw Error('No document exist with id: ' + props.id);
       }
     });
 
     doc.on('load', load.bind(this));
+    doc.on('op', update.bind(this));
     doc.on('del', del.bind(this));
 
     function load() {
-      this.setState({doc}, this.createBinding);
+      this.setState({doc});
+    }
+
+    function update(op, source) {
+      // Update only if the change comes from the server
+      const newValue = doc.data.ops[0].insert;
+      console.log(newValue);
+      if (!source) {
+        this._editor.setEditorContents(this._editor.getEditor(), newValue);
+      }
     }
 
     function del() {
-      this.destroyBinding();
+      this.destroy();
     }
   }
 
-  createBinding() {
-    this.binding = new StringBinding(this._textarea, this.state.doc);
-    this.binding.setup();
-  }
-
-  destroyBinding() {
+  destroy() {
     this.state.doc.unsubscribe();
     this.state.doc.destroy();
-    this.binding.destroy();
     this.setState({doc: null});
+  }
+
+  handleChange(content, delta, source, editor) {
+    // If we are the one making the change
+    if (source === 'user') {
+      this.state.doc.submitOp(delta);
+    }
+
+    if (this.props.onChange) this.props.onChange(content, delta, source, editor);
   }
 
   render() {
     return (
-      <textarea
-        onChange={this.props.onChange}
-        ref={(ref) => this._textarea = ref}
-        className={this.props.classNames}
-        rows={this.props.rows}
+      this.state.doc &&
+      <ReactQuill
+        {...this.props}
+        value={this.state.doc.data.ops[0].insert}
+        onChange={this.handleChange.bind(this)}
+        ref={(ref) => this._editor = ref}
       />
     );
   }
 }
 
 CollabRichEditor.PropTypes = {
-  id: PropTypes.string.isRequired,
+  docId: PropTypes.string.isRequired,
   collectionName: PropTypes.string.isRequired,
-  className: PropTypes.string,
   onChange: PropTypes.func
 };
