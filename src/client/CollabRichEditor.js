@@ -49,10 +49,9 @@ export default class CollabRichEditor extends Component {
 
     function update(op, source) {
       // Update only if the change comes from the server
-      const newValue = doc.data.ops[0].insert;
-      console.log(newValue);
       if (!source) {
-        this._editor.setEditorContents(this._editor.getEditor(), newValue);
+        const editor = this._editor.getEditor();
+        editor.updateContents(op);
       }
     }
 
