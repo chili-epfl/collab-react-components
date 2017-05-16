@@ -36,6 +36,28 @@ export default class CollabModel {
   }
 
   /**
+   * Creates a new document for rich text editors.
+   *
+   * @param {String} id The document id
+   * @param {String} data The document initial data string.
+   * @returns {Doc} The Document created
+   */
+  createRichText(id, data = '') {
+    const doc = this.connection.get(this.collectionName, id);
+    doc.fetch((err) => {
+      if (err) throw err;
+      if (doc.type === null) {
+        doc.create([{insert: data}], 'rich-text', function (err) {
+          if (err) throw err;
+          return doc;
+        });
+      }
+    });
+
+    return doc;
+  }
+
+  /**
    * Creates a new form given a schema.
    *
    * @param {String} id The form id

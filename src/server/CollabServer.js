@@ -4,6 +4,7 @@
 import http from 'http';
 import ShareDB from 'sharedb';
 import ShareDBMongo from 'sharedb-mongo';
+import RichText from 'rich-text';
 import WebSocket from 'ws';
 import WebsocketJSONStream from 'websocket-json-stream';
 
@@ -35,6 +36,7 @@ CollabServer.start = (app = {}, options = {}) => {
   }
 
   // Create the ShareDB backend (that will need to be exported)
+  ShareDB.types.register(RichText.type);
   CollabServer.backend = new ShareDB({db});
 
   // Create the Websocket server

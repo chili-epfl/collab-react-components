@@ -51,6 +51,7 @@
     "react": "^15.0.0",
     "react-addons-test-utils": "^15.0.0",
     "react-dom": "^15.0.0",
+    "rich-text": "^3.1.0",
     "sinon": "^1.17.3"
   },
   "peerDependencies": {
@@ -61,7 +62,10 @@
     "babel-runtime": "^6.6.1",
     "http": "0.0.0",
     "prop-types": "^15.5.9",
+    "quill": "^1.2.4",
     "react-jsonschema-form": "^0.48.2",
+    "react-quill": "^1.0.0-rc.2",
+    "rich-text": "^3.1.0",
     "sharedb": "^1.0.0-beta.7",
     "sharedb-mongo": "^1.0.0-beta.3",
     "sharedb-string-binding": "^1.0.0",
