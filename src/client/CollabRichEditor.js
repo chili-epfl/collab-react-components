@@ -17,20 +17,6 @@ export default class CollabRichEditor extends Component {
     this.state = {
       doc: null,
     };
-
-    const OPTIONs = [
-      'printWidth',
-      'tabWidth',
-      'singleQuote',
-      'trailingComma',
-      'bracketSpacing',
-      'jsxBracketSameLine',
-      'parser',
-      'semi',
-      'useTabs',
-      'doc',
-    ];
-    const afain = 0;
   }
 
   componentWillMount() {
