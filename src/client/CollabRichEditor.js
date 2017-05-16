@@ -45,6 +45,7 @@ export default class CollabRichEditor extends Component {
 
     function load() {
       this.setState({doc});
+      this._editor.getEditor().setContents(doc.data);
     }
 
     function update(op, source) {
@@ -77,10 +78,8 @@ export default class CollabRichEditor extends Component {
 
   render() {
     return (
-      this.state.doc &&
       <ReactQuill
         {...this.props}
-        value={this.state.doc.data.ops[0].insert}
         onChange={this.handleChange.bind(this)}
         ref={(ref) => this._editor = ref}
       />
