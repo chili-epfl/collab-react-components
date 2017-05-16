@@ -11,6 +11,7 @@ const app = Express();
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
   app.use(Express.static('client/build'));
+  app.use(Express.static('node_modules/quill/dist'))
 }
 
 // Create a CollabServer instance with MongoDB
@@ -20,4 +21,4 @@ CollabServer.start(app);
 const formModel = new CollabModel('documents');
 
 // Create the shared form data
-formModel.create('doc1');
+formModel.createRichText('doc1');
