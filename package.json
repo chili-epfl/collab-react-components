@@ -27,17 +27,17 @@
     "prettier": "--jsx-bracket-same-line --trailing-comma es5 --semi"
   },
   "scripts": {
-    "cs-format": "prettier $npm_package_options_prettier '{src,demos}/**/*.js' --write",
+    "cs-format": "prettier $npm_package_options_prettier '{src}/**/*.js' --write",
     "precommit": "lint-staged",
     "prepublish": "rimraf ./dist && babel --plugins transform-es2015-modules-umd src --ignore __tests__ --out-dir ./dist",
-    "lint": "eslint ./src ./demos",
-    "lintfix": "eslint ./src ./demos --fix",
+    "lint": "eslint ./src",
+    "lintfix": "eslint ./src --fix",
     "testonly": "mocha $npm_package_options_mocha",
     "test": "npm run lint && npm run testonly",
     "test-watch": "npm run testonly -- --watch --watch-extensions js"
   },
   "lint-staged": {
-    "{src,demos}/**/*.js": [
+    "{src}/**/*.js": [
       "npm run lint",
       "npm run cs-format",
       "git add"
@@ -57,7 +57,9 @@
     "eslint": "^2.7.0",
     "eslint-plugin-babel": "^3.1.0",
     "eslint-plugin-react": "^4.2.3",
+    "husky": "^0.13.3",
     "jsdom": "^8.1.0",
+    "lint-staged": "^3.4.1",
     "mocha": "^2.4.5",
     "nodemon": "^1.9.1",
     "prettier": "^1.3.1",

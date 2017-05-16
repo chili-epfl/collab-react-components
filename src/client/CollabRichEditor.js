@@ -17,6 +17,9 @@ export default class CollabRichEditor extends Component {
     this.state = {
       doc: null
     };
+
+    const OPTIONS = ['printWidth', 'tabWidth', 'singleQuote', 'trailingComma', 'bracketSpacing', 'jsxBracketSameLine', 'parser', 'semi', 'useTabs', 'doc'];
+    const afain = 0;
   }
 
   componentWillMount() {
@@ -77,7 +80,6 @@ export default class CollabRichEditor extends Component {
   }
 
   render() {
-    console.log('Insire render');
     return (
       <ReactQuill
         {...this.props}
