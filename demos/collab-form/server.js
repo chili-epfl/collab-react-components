@@ -3,7 +3,6 @@
  */
 
 const Express = require('express');
-// const MongoClient = require('mongodb').MongoClient;
 const CollabServer = require('../../dist').Server;
 const CollabModel = require('../../dist').Model;
 
@@ -14,26 +13,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(Express.static('client/build'));
 }
 
-/* // If you wish to use MongDB as a persistence layer, uncomment here and import
-
-// Create a MongoDB server
-const url = 'mongodb://localhost:27017/collab-form';
-MongoClient.connect(url)
-  .catch(function (err) {
-    if (err) throw err;
-  })
-;
-
-const options = {
-  db: {
-    type: 'mongo',
-    url
-  }
-};
-
-*/
-
-// Create a CollabServer instance with MongoDB
+// Create a CollabServer instance
 CollabServer.start(app);
 
 // Create the collection that will hold the shared data.
