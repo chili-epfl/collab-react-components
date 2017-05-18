@@ -62,5 +62,5 @@ You should be able to see a web form and be able to modify it.
 If you open another browser window to the same URL,
 you should see the two forms synchronized in real time.
 
-![image](https://raw.githubusercontent.com/darioAnongba/collab-web-forms/master/demos/collab-rich-editor/real-time-form.png)
+![image](https://raw.githubusercontent.com/darioAnongba/collab-web-forms/master/demos/collab-form/real-time-form.png)
 

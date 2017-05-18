@@ -62,5 +62,5 @@ You should be able to see an editor and be able to type in it.
 If you open another browser window to the same URL,
 you should see the two editors synchronized in real time.
 
-![image](https://raw.githubusercontent.com/darioAnongba/collab-web-forms/master/demos/collab-rich-editor/real-time-simple.png)
+![image](https://raw.githubusercontent.com/darioAnongba/collab-web-forms/master/demos/collab-editor/real-time-simple.png)
 
