@@ -10,14 +10,16 @@ Database backend and React components for smooth and quick integration of a real
         - [Server API](#editor-server-api)
         - [Client API](#editor-client-api)
     - [Collaborative Form](#collaborative-form)
-        - [Server API](#editor-server-api)
-        - [Client API](#editor-client-api)
+        - [Server API](#form-server-api)
+        - [Client API](#form-client-api)
+    - [Rich Collaborative Editor](#rich-collaborative-editor)
+        - [Server API](#rich-editor-server-api)
+        - [Client API](#rich-editor-client-api)
 - [License](#license)
 ---
 
 ## Installation
 - Requires React 15.4.0+.
-- Requires "react-jsonschema-form" npm package.
 > Note: The "master" branch of the repository reflects the published stable release.
 
 ```
@@ -70,7 +72,7 @@ model.create("myEditor");
 Call `CollabEditor` from the client
 
 ```jsx
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from "react-dom";
 import { CollabEditor } from 'collab-web-forms/dist/client';
 
@@ -125,7 +127,7 @@ Just call `CollabForm` from the client.
 At least not until the data is crypted on the database.
 
 ```jsx
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from "react-dom";
 import { CollabForm } from 'collab-web-forms/dist/client';
 
@@ -171,9 +173,58 @@ render((
 >Note: Do not pass `formData` to `CollabForm`, the data will be fetched
 from the collaboratively shared data in the database.
 
+
+### Rich Collaborative Editor
+>Note: The collaborative form is based on [react-quill](https://github.com/zenoamaro/react-quill)
+
+To implement a rich collaborative editor, start by instantiating a new `CollabModel` on the server,
+taking as parameter the name of the collection:
+
+```JavaScript
+const CollabModel = require('collab-web-forms').Model;
+
+const model = new CollabModel("documents");
+model.createRichText('myDoc', 'My initial data');
+```
+This will create a new collaborative document on the database containing the
+collaborative data of the rich text editor.
+
+#### Server API
+
+- `createRichText(id, data='')`: Creates a new document with `id` and with initial `data` (String).
+- `remove(id)`: Deletes a document with ID `id`.
+
+#### Client API
+
+Just call `CollabRichEditor` from the client.
+
+```jsx
+import React from 'react';
+import { render } from "react-dom";
+import { CollabRichEditor } from 'collab-web-forms/dist/client';
+
+render((
+  <CollabRichEditor
+    id="MyDoc"
+    collectionName="documents"
+  />
+), document.getElementById("app"));
+```
+
+> Note: `CollabRichEditor` can be used exactly like `ReactQuill` from `react-quill`
+with few exceptions (see below).
+
+
+Props of `CollabRichEditor` that vary from `react-quill`:
+- `id`: ID of the form to fetch from the database
+- `collectionName`: Name of the collection
+
+>Note: Do not pass `value` or `defaultValue` to `CollabRichEditor`, the data will be fetched
+from the collaboratively shared data on the server.
+
 ## Example app
 Multiple example apps are present in the `demos` directory. Feel free look at
-them for a real implementation of `collab-meteor`.
+them for a real implementation.
 
 ## License
 TODO
