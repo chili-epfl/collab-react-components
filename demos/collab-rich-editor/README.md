@@ -6,7 +6,7 @@ This example demonstrates
  - Implementation of a backend server using Express and websockets.
  - Initialisation of the collaborative server instance.
  - Creation of a new rich text document on the server
- - Utilisation of the Rich Editor component
+ - Utilisation of the CollabRichEditor component
 
 
 In this demo, data is not persisted. To persist data, run a Mongo

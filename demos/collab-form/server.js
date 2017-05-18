@@ -28,7 +28,6 @@ const schema = {
     checkbox: {type: 'boolean', title: 'Checkbox'},
     checkbox2: {type: 'boolean', title: 'Checkbox2'},
     textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
-    richText: {type: 'string', title: 'Rich text editor', default: 'Initial text'}
   }
 };
 

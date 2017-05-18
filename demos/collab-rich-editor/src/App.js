@@ -10,7 +10,7 @@ export default class App extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Simple Collaborative Rich Editor</h1>
+          <h1>Rich Collaborative Editor</h1>
         </header>
 
         <CollabRichEditor
