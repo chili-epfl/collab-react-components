@@ -10,8 +10,6 @@ import CollabStringField from './fields/CollabStringField';
 import CollabTextWidget from './widgets/CollabTextWidget';
 import CollabTextareaWidget from './widgets/CollabTextareaWidget';
 import CollabURLWidget from './widgets/CollabURLWidget';
-import { getUiOptions } from 'react-jsonschema-form/lib/utils';
-import { isAvailableWidget } from './utils';
 
 /**
  * Collaborative Form class.
@@ -81,13 +79,6 @@ export default class CollabForm extends Component {
       Object.keys(properties).forEach(key => {
         if (properties[key].type !== 'string') {
           nonCollabKeys.push(key);
-        } else if (props.uiSchema[key]) {
-          // If the widget is not collaborative, we also have to update it !
-          const { widget = 'text' } = getUiOptions(props.uiSchema[key]);
-          const isSupported = isAvailableWidget(widget);
-          if (!isSupported) {
-            nonCollabKeys.push(key);
-          }
         }
       });
 

@@ -3,7 +3,7 @@
  */
 
 const Express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+// const MongoClient = require('mongodb').MongoClient;
 const CollabServer = require('../../dist').Server;
 const CollabModel = require('../../dist').Model;
 
