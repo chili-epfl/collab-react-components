@@ -12,7 +12,7 @@ export default class App extends Component {
     this.state = {
       id: 'form1',
       uiSchema: {
-        input: {'ui:widget': 'uri'},
+        input: {'ui:widget': 'date'},
         textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
       }
     };
@@ -31,7 +31,7 @@ export default class App extends Component {
       this.setState({
         id: 'form1',
         uiSchema: {
-          input: {'ui:widget': 'uri'},
+          input: {'ui:widget': 'date'},
           textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
         }
       })

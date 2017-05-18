@@ -3,7 +3,7 @@
  */
 
 const Express = require('express');
-// const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 const CollabServer = require('../../dist').Server;
 const CollabModel = require('../../dist').Model;
 
@@ -47,7 +47,8 @@ const schema = {
     input: {type: 'string', title: 'Input'},
     checkbox: {type: 'boolean', title: 'Checkbox'},
     checkbox2: {type: 'boolean', title: 'Checkbox2'},
-    textarea: {type: 'string', title: 'Textarea', default: 'Default text'}
+    textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
+    richText: {type: 'string', title: 'Rich text editor', default: 'Initial text'}
   }
 };
 
