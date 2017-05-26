@@ -45,11 +45,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 The implementation is compatible with the create-react-app dev server.
 
 > Note: that both servers need to be running at once for this
-to work, you will need to run both `node server.js` AND `npm start` at the same time
-(on different terminals).
-```
-node server.js
-```
+to work, you will need to run both `node server.js` AND `npm start` at the same time, this is don
+by running (see package.json):
 ```
 npm start
 ```
