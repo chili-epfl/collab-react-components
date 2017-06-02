@@ -4,7 +4,7 @@
 
 const Express = require('express');
 const CollabServer = require('../../dist').Server;
-const CollabModel = require('../../dist').Model;
+const CollabCollection = require('../../dist').Collection;
 
 /* Create Express application */
 const app = Express();
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 CollabServer.start(app);
 
 // Create the collection that will hold the shared data.
-const formModel = new CollabModel('forms');
+const forms = new CollabCollection('forms');
 
 // Define the schema of the data
 const schema = {
@@ -43,5 +43,5 @@ const schema2 = {
 };
 
 // Create the shared form data
-formModel.createForm('form1', schema);
-formModel.createForm('form2', schema2);
+forms.createForm('form1', schema);
+forms.createForm('form2', schema2);

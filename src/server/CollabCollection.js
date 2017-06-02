@@ -1,7 +1,7 @@
 import CollabServer from './CollabServer';
 import _ from 'underscore';
 
-export default class CollabModel {
+export default class CollabCollection {
   /**
    * @param {Object} collectionName The name of the collection to bind to ShareDB
    */
@@ -9,7 +9,7 @@ export default class CollabModel {
     const backend = CollabServer.backend;
     if (backend === null) {
       throw new Error(
-        'CollabModel: You should start the CollabServer before using the model.'
+        'CollabCollection: You should start the CollabServer before using the model.'
       );
     }
 

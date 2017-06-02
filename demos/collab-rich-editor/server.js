@@ -4,7 +4,7 @@
 
 const Express = require('express');
 const CollabServer = require('../../dist').Server;
-const CollabModel = require('../../dist').Model;
+const CollabCollection = require('../../dist').Collection;
 
 /* Create Express application */
 const app = Express();
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 CollabServer.start(app);
 
 // Create the collection that will hold the shared data.
-const model = new CollabModel('documents');
+const documents = new CollabCollection('documents');
 
 // Create the shared form data
-model.createRichText('doc1', 'My initial data');
+documents.createRichText('rich-editor1', 'My initial data');

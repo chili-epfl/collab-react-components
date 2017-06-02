@@ -3,6 +3,6 @@
  */
 
 import Server from './server/CollabServer';
-import Model from './server/CollabModel';
+import Collection from './server/CollabCollection';
 
-export { Server, Model };
+export { Server, Collection };
