@@ -78,6 +78,7 @@ export default class CollabCollection {
           let prop = {};
           // If it is a String, we create an empty string if the default value is empty.
           if (value.type === 'string') {
+            console.log(value.default);
             prop[key] = typeof value.default === 'undefined'
               ? ''
               : value.default;
