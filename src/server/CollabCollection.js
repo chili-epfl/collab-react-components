@@ -81,6 +81,14 @@ export default class CollabCollection {
             prop[key] = typeof value.default === 'undefined'
               ? ''
               : value.default;
+          } else if (value.type === 'boolean') {
+            prop[key] = typeof value.default === 'undefined'
+              ? false
+              : value.default;
+          } else if (value.type === 'integer' || value.type === 'number') {
+            prop[key] = typeof value.default === 'undefined'
+              ? 0
+              : value.default;
           } else {
             prop[key] = typeof value.default === 'undefined'
               ? null
