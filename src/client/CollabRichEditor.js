@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import connection from './connection';
+import _ from 'underscore';
 
 /**
  * Collaborative Rich Editor.
@@ -17,6 +18,11 @@ export default class CollabRichEditor extends Component {
     this.state = {
       doc: null,
     };
+
+    // We extend the modules to add by default drag and drop of images
+    _.extend(this.props.modules, {
+      dragAndDrop: true,
+    });
   }
 
   componentWillMount() {
@@ -90,6 +96,10 @@ export default class CollabRichEditor extends Component {
     );
   }
 }
+
+CollabRichEditor.defaultProps = {
+  modules: {},
+};
 
 CollabRichEditor.PropTypes = {
   docId: PropTypes.string.isRequired,
