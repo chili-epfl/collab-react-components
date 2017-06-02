@@ -2,6 +2,7 @@
  * Created by dario on 08.03.17.
  */
 import sharedb from 'sharedb/lib/client';
+import WebSocket from 'reconnecting-websocket';
 
 // This line makes the WebSocket connection always use port the CollabServer port.
 const host = window.location.host.replace('3000', '8080');

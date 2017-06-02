@@ -80,12 +80,13 @@
     "prop-types": "^15.5.9",
     "react-jsonschema-form": "^0.48.2",
     "react-quill": "^1.0.0-rc.2",
+    "reconnecting-websocket": "^3.0.5",
     "rich-text": "^3.1.0",
     "sharedb": "^1.0.0-beta.7",
     "sharedb-mongo": "^1.0.0-beta.3",
     "sharedb-string-binding": "^1.0.0",
     "underscore": "^1.8.3",
     "websocket-json-stream": "0.0.3",
-    "ws": "^2.3.1"
+    "ws": "^3.0.0"
   }
 }
