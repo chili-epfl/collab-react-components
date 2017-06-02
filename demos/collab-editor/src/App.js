@@ -14,7 +14,7 @@ export default class App extends Component {
         </header>
 
         <CollabEditor
-          id="doc1"
+          id="editor1"
           collectionName="documents"
           rows="20"
         />

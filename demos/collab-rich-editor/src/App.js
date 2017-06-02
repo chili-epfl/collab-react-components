@@ -14,7 +14,7 @@ export default class App extends Component {
         </header>
 
         <CollabRichEditor
-          id="doc1"
+          id="rich-editor1"
           collectionName="documents"
         />
       </div>
