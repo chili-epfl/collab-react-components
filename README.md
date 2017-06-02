@@ -47,25 +47,64 @@ CollabServer.stop();
 ```
 > Note: See the demos for an example of implementation with an
 [Express](https://expressjs.com/) server.
+
+### The CollabCollection class
+
+The `CollabCollection` class represents a new collaborative collection of documents on the server.
+Collaborative Collections collection can be persisted to disk using MongoDB or in memory if no options
+are passed to the server. To use MongoDB, set up a database and pass its URL
+to the `CollabServer`. For example:
+
+```JavaScript
+const MongoClient = require('mongodb').MongoClient;
+
+// Create a MongoDB server
+const url = 'mongodb://localhost:27017/my-collaborative-app';
+MongoClient.connect(url)
+  .catch(function (err) {
+    if (err) throw err;
+  })
+;
+
+const options = {
+  db: {
+    type: 'mongo',
+    url
+  }
+};
+
+// Create a CollabServer instance with MongoDB
+CollabServer.start(app, options);
+```
+>Note: For the moment, only MongoDB is supported as a persistence layer.
+
+Once a `CollabCollection` is created, you will be able to query its content
+using the `CollabCollection` methods.
+
 ## Usage
 For a basic implementation, see the demos applications.
+
+### Server API
+
+The `CollabCollection` class methods are the following:
+
+- `create(id, data = '')`: Creates a new collaborative document for a simple editor with `id` (String) and with initial `data` (String).
+- `createForm(id, schema)`: Creates a new collaborative form with `id` (String) and with initial data corresponding to the `schema`, where
+`schema` is a `react-jsonschema-form` schema.
+- `createRichText(id, data='')`: Creates a new collaborative document for a rich editor with `id` (String) and with initial `data` (String).
+- `remove(id)`: Deletes a document with ID `id`. 
 
 ### Simple Collaborative Editor
 
 To implement a simple collaborative editor (textarea), start by instantiating
-a new `CollabModel.js` on the server, taking as parameter the name of the collaborative collection:
+a new `CollabCollection` on the server, taking as parameter the name of the collaborative collection:
 
 ```JavaScript
-const CollabModel = require('collab-web-forms').Model;
+const CollabCollection = require('collab-web-forms').Collection;
 
-const model = new CollabModel("documents");
-model.create("myEditor");
+const documents = new CollabCollection("documents");
+documents.create("editor1");
 ```
-
-#### Server API
-
-- `create(id, data = '')`: Creates a new document with `id` and with initial `data` (String).
-- `remove(id)`: Deletes a document with ID `id`.
 
 #### Client API
 
@@ -73,33 +112,31 @@ Call `CollabEditor` from the client
 
 ```jsx
 import React from 'react';
-import { render } from "react-dom";
 import { CollabEditor } from 'collab-web-forms/dist/client';
 
-render((
-  <CollabEditor
+<CollabEditor
     id="myEditor"
     collectionName="documents"
-  />
-), document.getElementById("app"));
+/>
 ```
 Props of `CollabEditor`:
-- `id*`: ID of the document to fetch from the database
-- `collectionName*`: Name of the collection
+- `id`: ID of the document to fetch from the database
+- `collectionName`: Name of the collection
 - `rows`: "rows" attribute of the textarea
 - `classNames`: default is `form-control`
-- `onChange`: Function called on every local modification. Returns the current value of the editor.
+- `onChange(text)`: Function called on every local modification.
+`text` is a string representing the current value of the editor.
 
 ### Collaborative Form
 >Note: The collaborative form is based on [react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
 
-To implement a collaborative form, start by instantiating a new `CollabModel` on the server,
+To implement a collaborative form, start by instantiating a new `CollabCollection` on the server,
 taking as parameter the name of the collection and a schema:
 
 ```JavaScript
-const CollabModel = require('collab-web-forms').Model;
+const CollabCollection = require('collab-web-forms').Collection;
 
-const model = new CollabModel("forms");
+const forms = new CollabCollection("forms");
 const schema = {
       title: "My collaborative form",
       type: "object",
@@ -109,38 +146,29 @@ const schema = {
         textarea: {type: "string", title: "Textarea", default: 'Default text'},
       }
     };
-model.createForm("myForm", schema);
+forms.createForm("form1", schema);
 ```
 This will create a new collaborative document on the database containing the
 collaborative data of the form.
-
-#### Server API
-
-- `createForm(id, schema)`: Creates a new document with `id` and with initial data corresponding to the `schema`.
-- `remove(id)`: Deletes a form with ID `id`.
 
 #### Client API
 
 Just call `CollabForm` from the client.
 
-> Note: You shouldn't use the widget `password` in a collaborative form.
-At least not until the data is crypted on the database.
+> Note: You should not use the widget `password` in a collaborative form.
+At least not until the data is encrypted on the database.
 
 ```jsx
 import React from 'react';
-import { render } from "react-dom";
 import { CollabForm } from 'collab-web-forms/dist/client';
 
-render((
-  <CollabForm
-    id="MyForm"
+<CollabForm
+    id="MyForm" 
     collectionName="forms"
-  />
-), document.getElementById("app"));
+/>
 ```
 > Note: `CollabForm` can be used exactly like `Form` from `react-jsonschema-form`
 with few exceptions (see below).
-
 
 Props of `CollabForm` that vary from `react-jsonschema-form`:
 - `id`: ID of the form to fetch from the database
@@ -158,14 +186,11 @@ const uiSchema = {
     uri: {"ui:widget": "uri"}
 }
 
-render((
-  <CollabForm
+<CollabForm
     id="MyForm"
     collectionName="forms"
-    schema={schema}
     uiSchema={uiSchema}
-  />
-), document.getElementById("app"));
+/>
 
 ```
 >Note: `text` is the default String type.
@@ -177,22 +202,17 @@ from the collaboratively shared data in the database.
 ### Rich Collaborative Editor
 >Note: The collaborative form is based on [react-quill](https://github.com/zenoamaro/react-quill)
 
-To implement a rich collaborative editor, start by instantiating a new `CollabModel` on the server,
+To implement a rich collaborative editor, start by instantiating a new `CollabCollection` on the server,
 taking as parameter the name of the collection:
 
 ```JavaScript
-const CollabModel = require('collab-web-forms').Model;
+const CollabCollection = require('collab-web-forms').Collection;
 
-const model = new CollabModel("documents");
-model.createRichText('myDoc', 'My initial data');
+const documents = new CollabCollection("documents");
+documents.createRichText('rich-editor1', 'My initial data');
 ```
 This will create a new collaborative document on the database containing the
 collaborative data of the rich text editor.
-
-#### Server API
-
-- `createRichText(id, data='')`: Creates a new document with `id` and with initial `data` (String).
-- `remove(id)`: Deletes a document with ID `id`.
 
 #### Client API
 
@@ -200,15 +220,12 @@ Just call `CollabRichEditor` from the client.
 
 ```jsx
 import React from 'react';
-import { render } from "react-dom";
 import { CollabRichEditor } from 'collab-web-forms/dist/client';
 
-render((
-  <CollabRichEditor
+<CollabRichEditor
     id="MyDoc"
     collectionName="documents"
-  />
-), document.getElementById("app"));
+/>
 ```
 
 > Note: `CollabRichEditor` can be used exactly like `ReactQuill` from `react-quill`

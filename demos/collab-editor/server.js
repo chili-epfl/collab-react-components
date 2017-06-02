@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(Express.static('client/build'));
 }
 
-// Create a CollabServer instance with MongoDB
+// Create a CollabServer instance
 CollabServer.start(app);
 
 // Create the collection that will hold the shared data.
