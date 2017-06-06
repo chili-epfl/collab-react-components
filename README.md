@@ -9,11 +9,8 @@ Database backend and React components for smooth and quick integration of a real
 - [Usage](#usage)
     - [Server API](#server-api)
     - [Simple collaborative Editor](#simple-collaborative-editor)
-        - [Client API](#editor-client-api)
     - [Collaborative Form](#collaborative-form)
-        - [Client API](#form-client-api)
     - [Rich Collaborative Editor](#rich-collaborative-editor)
-        - [Client API](#rich-editor-client-api)
 - [License](#license)
 ---
 
