@@ -5,7 +5,7 @@ Database backend and React components for smooth and quick integration of a real
 ## Table of contents
 - [Installation](#installation)
 - [Server initialization](#server-initialization)
-    - [The CollabCollection class](#collab-collection)
+    - [The CollabCollection class](#the-collabcollection-class)
 - [Usage](#usage)
     - [Server API](#server-api)
     - [Simple collaborative Editor](#simple-collaborative-editor)
