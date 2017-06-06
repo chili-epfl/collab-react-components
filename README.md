@@ -5,15 +5,14 @@ Database backend and React components for smooth and quick integration of a real
 ## Table of contents
 - [Installation](#installation)
 - [Server initialization](#server-initialization)
+    - [The CollabCollection class](#collab-collection)
 - [Usage](#usage)
+    - [Server API](#server-api)
     - [Simple collaborative Editor](#simple-collaborative-editor)
-        - [Server API](#editor-server-api)
         - [Client API](#editor-client-api)
     - [Collaborative Form](#collaborative-form)
-        - [Server API](#form-server-api)
         - [Client API](#form-client-api)
     - [Rich Collaborative Editor](#rich-collaborative-editor)
-        - [Server API](#rich-editor-server-api)
         - [Client API](#rich-editor-client-api)
 - [License](#license)
 ---
@@ -244,4 +243,4 @@ Multiple example apps are present in the `demos` directory. Feel free look at
 them for a real implementation.
 
 ## License
-TODO
+MIT
