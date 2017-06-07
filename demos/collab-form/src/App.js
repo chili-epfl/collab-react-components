@@ -12,12 +12,37 @@ export default class App extends Component {
     this.state = {
       id: 'formTest',
       uiSchema: {
-          "alternative": {
-              "alt-datetime": {
-                  "ui:widget": "alt-datetime"
+          "boolean": {
+              "radio": {
+                  "ui:widget": "radio"
               },
-              "alt-date": {
-                  "ui:widget": "alt-date"
+              "select": {
+                  "ui:widget": "select"
+              }
+          },
+          "string": {
+              "textarea": {
+                  "ui:widget": "textarea",
+                  "ui:options": {
+                      "rows": 5
+                  }
+              },
+              "color": {
+                  "ui:widget": "color"
+              }
+          },
+          "secret": {
+              "ui:widget": "hidden"
+          },
+          "disabled": {
+              "ui:disabled": true
+          },
+          "readonly": {
+              "ui:readonly": true
+          },
+          "widgetOptions": {
+              "ui:options": {
+                  "backgroundColor": "yellow"
               }
           }
       }

@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StringBinding from 'sharedb-string-binding';
-import { isAvailableWidget } from '../utils';
+import { isAvailableWidget, isAvailableFormat, findPath } from '../utils';
 import {
   getWidget,
   getUiOptions,
@@ -17,13 +17,14 @@ class CollabStringField extends Component {
     super(props);
 
     const { widget = 'text' } = getUiOptions(this.props.uiSchema);
-    this.isAvailableWidget = isAvailableWidget(widget);
+    const availWidget = isAvailableWidget(widget);
+    const availFormat = isAvailableFormat(this.props.schema.format);
 
-    // It's collaborative only if it's an available widget, a string and not a date:
+    // It's collaborative only if it's an available widget, a string and not a date or email:
     this.isCollab =
-      this.isAvailableWidget &&
+      availWidget &&
       this.props.schema.type === 'string' &&
-      this.props.schema.format === undefined;
+      (this.props.schema.format === undefined || availFormat);
   }
 
   componentDidMount() {
@@ -38,9 +39,7 @@ class CollabStringField extends Component {
 
   createBinding() {
     // If it's a single value, we don't define a path
-    const path = this.props.name !== undefined
-      ? ['data', this.props.name]
-      : ['data'];
+    const path = findPath(this.props.idSchema.$id, this.props.name);
     this.binding = new StringBinding(
       this._widget,
       this.props.formContext,

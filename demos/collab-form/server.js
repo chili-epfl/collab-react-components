@@ -37,38 +37,81 @@ const forms = new CollabCollection('forms');
 
 // Define the schema of the data
 const schemaTest = {
-    "title": "Date and time widgets",
+    "title": "Widgets",
     "type": "object",
     "properties": {
-        "native": {
-            "title": "Native",
-            "description": "May not work on some browsers, notably Firefox Desktop and IE.",
+        "stringFormats": {
             "type": "object",
+            "title": "String formats",
             "properties": {
-                "datetime": {
+                "email": {
                     "type": "string",
-                    "format": "date-time"
+                    "format": "email"
                 },
-                "date": {
+                "uri": {
                     "type": "string",
-                    "format": "date"
+                    "format": "uri"
                 }
             }
         },
-        "alternative": {
-            "title": "Alternative",
-            "description": "These work on most platforms.",
+        "boolean": {
             "type": "object",
+            "title": "Boolean field",
             "properties": {
-                "alt-datetime": {
-                    "type": "string",
-                    "format": "date-time"
+                "default": {
+                    "type": "boolean",
+                    "title": "checkbox (default)",
+                    "description": "This is the checkbox-description"
                 },
-                "alt-date": {
-                    "type": "string",
-                    "format": "date"
+                "radio": {
+                    "type": "boolean",
+                    "title": "radio buttons",
+                    "description": "This is the radio-description"
+                },
+                "select": {
+                    "type": "boolean",
+                    "title": "select box",
+                    "description": "This is the select-description"
                 }
             }
+        },
+        "string": {
+            "type": "object",
+            "title": "String field",
+            "properties": {
+                "default": {
+                    "type": "string",
+                    "title": "text input (default)"
+                },
+                "textarea": {
+                    "type": "string",
+                    "title": "textarea"
+                },
+                "color": {
+                    "type": "string",
+                    "title": "color picker",
+                    "default": "#151ce6"
+                }
+            }
+        },
+        "secret": {
+            "type": "string",
+            "default": "I'm a hidden string."
+        },
+        "disabled": {
+            "type": "string",
+            "title": "A disabled field",
+            "default": "I am disabled."
+        },
+        "readonly": {
+            "type": "string",
+            "title": "A readonly field",
+            "default": "I am read-only."
+        },
+        "widgetOptions": {
+            "title": "Custom widget with options",
+            "type": "string",
+            "default": "I am yellow"
         }
     }
 };

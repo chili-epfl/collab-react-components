@@ -94,7 +94,6 @@ export default class CollabCollection {
             break;
           case 'object':
             prop[key] = createObject(value);
-            console.log(prop[key]);
             break;
           default:
             callback(
