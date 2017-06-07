@@ -21,15 +21,21 @@ class CollabStringField extends Component {
   }
 
   componentDidMount() {
-    if (this.isAvailableWidget) this.createBinding();
+    if (this.isAvailableWidget && this.props.schema.type === 'string') {
+      this.createBinding();
+    }
   }
 
   componentWillUnmount() {
-    if (this.isAvailableWidget) this.destroyBinding();
+    if (this.isAvailableWidget && this.props.schema.type === 'string')
+      this.destroyBinding();
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.props.formContext, ['data', this.props.name]);
+    this.binding = new StringBinding(this._widget, this.props.formContext, [
+      'data',
+      this.props.name,
+    ]);
     this.binding.setup();
   }
 
@@ -39,9 +45,11 @@ class CollabStringField extends Component {
 
   static getWidget(schema, widget, widgets) {
     if (widget === 'password') {
-      throw Error('You should not use the widget "password" within a collaborative form');
+      throw Error(
+        'You should not use the widget "password" within a collaborative form'
+      );
     } else {
-      return getWidget(schema, widget, widgets)
+      return getWidget(schema, widget, widgets);
     }
   }
 
@@ -58,21 +66,23 @@ class CollabStringField extends Component {
       autofocus,
       onChange,
       onBlur,
-      registry = getDefaultRegistry()
+      registry = getDefaultRegistry(),
     } = this.props;
 
     const { title, format } = schema;
     const { widgets, formContext } = registry;
     const enumOptions = Array.isArray(schema.enum) && optionsList(schema);
     const defaultWidget = format || (enumOptions ? 'select' : 'text');
-    const { widget = defaultWidget, placeholder = '', ...options } = getUiOptions(
-      uiSchema
-    );
+    const {
+      widget = defaultWidget,
+      placeholder = '',
+      ...options
+    } = getUiOptions(uiSchema);
 
     const Widget = CollabStringField.getWidget(schema, widget, widgets);
 
     const ref = {};
-    if (this.isAvailableWidget) ref.widgetRef = w => this._widget = w;
+    if (this.isAvailableWidget) ref.widgetRef = w => (this._widget = w);
 
     if (options.emptyValue === undefined) options.emptyValue = '';
 
@@ -92,10 +102,9 @@ class CollabStringField extends Component {
         autofocus={autofocus}
         registry={registry}
         placeholder={placeholder}
-        { ...ref }
+        {...ref}
       />
     );
-
   }
 }
 

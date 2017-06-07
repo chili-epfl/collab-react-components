@@ -10,10 +10,8 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      id: 'form1',
-      uiSchema: {
-        textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
-      }
+      id: 'formTest',
+      uiSchema: {'ui:widget': 'range'}
     };
   }
 
