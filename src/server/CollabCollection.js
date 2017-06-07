@@ -64,14 +64,22 @@ export default class CollabCollection {
    *
    * @param {String} id The form id
    * @param {Object} schema The form schema used to generate the data object
+   * @param {function} callback The callback in case of error
    * @returns {Doc} The Form created
    */
-  createForm(id, schema = {}) {
+  createForm(id, schema = {}, callback = () => {}) {
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch(err => {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
+        // If root type is not object, then error:
+        if (schema.type !== 'object') {
+          callback(
+            Error('CollabCollection: The root element must be an object')
+          );
+        }
+
         let data = {};
 
         _.each(schema.properties, function(value, key) {

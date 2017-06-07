@@ -20,6 +20,12 @@ CollabServer.start(app);
 const forms = new CollabCollection('forms');
 
 // Define the schema of the data
+
+const schemaTest = {
+    "title": "A single-field form",
+    "type": "string"
+};
+
 const schema = {
   title: 'My Collaborative form',
   type: 'object',
@@ -45,3 +51,6 @@ const schema2 = {
 // Create the shared form data
 forms.createForm('form1', schema);
 forms.createForm('form2', schema2);
+forms.createForm('formTest', schemaTest, function(err) {
+  console.log(err);
+});
