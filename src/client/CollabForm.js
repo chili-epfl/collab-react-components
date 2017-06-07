@@ -77,25 +77,6 @@ export default class CollabForm extends Component {
     form.on('del', del.bind(this));
 
     function load() {
-      function pushNonCollabKeys(properties) {
-        // We save all non-collaborative keys
-        const nonCollabKeys = [];
-        Object.keys(properties).forEach(key => {
-          if (properties[key].type !== 'string') {
-            nonCollabKeys.push(key);
-          } else if (props.uiSchema[key]) {
-            // If the widget is not collaborative, we also have to update it !
-            const { widget = 'text' } = getUiOptions(props.uiSchema[key]);
-            const isSupported = isAvailableWidget(widget);
-            if (!isSupported) {
-              nonCollabKeys.push(key);
-            }
-          }
-        });
-
-        return nonCollabKeys;
-      }
-
       switch (form.data.schema.type) {
         case 'string':
           // If the widget is not collaborative, we also have to update it !
@@ -108,7 +89,21 @@ export default class CollabForm extends Component {
           }
           break;
         case 'object':
-          const nonCollabKeys = pushNonCollabKeys(form.data.schema.properties);
+          // We save all non-collaborative keys
+          const nonCollabKeys = [];
+          const properties = form.data.schema.properties;
+          Object.keys(properties).forEach(key => {
+            if (properties[key].type !== 'string') {
+              nonCollabKeys.push(key);
+            } else if (props.uiSchema[key]) {
+              // If the widget is not collaborative, we also have to update it !
+              const { widget = 'text' } = getUiOptions(props.uiSchema[key]);
+              const isSupported = isAvailableWidget(widget);
+              if (!isSupported) {
+                nonCollabKeys.push(key);
+              }
+            }
+          });
           // Form data available only when we are done loading the form
           this.setState({ form, nonCollabKeys });
           break;
