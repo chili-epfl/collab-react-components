@@ -39,7 +39,7 @@ npm start
 > Note: The "master" branch of the repository reflects the published stable release.
 
 ```
-$ npm install --save collab-web-forms
+$ npm install --save collab-react-components
 ```
 
 > Note: It is recommended to use [Bootstrap](http://getbootstrap.com/) 
@@ -50,7 +50,7 @@ In order to use the collaborative functionalities, you will need to start a new
 CollabServer instance. One way to do it is on startup:
 
 ```JavaScript
-const CollabServer = require('collab-web-forms').Server;
+const CollabServer = require('collab-react-components').Server;
 
 // app is you Express app for example.
 
@@ -116,7 +116,7 @@ To implement a simple collaborative editor (textarea), start by instantiating
 a new `CollabCollection` on the server, taking as parameter the name of the collaborative collection:
 
 ```JavaScript
-const CollabCollection = require('collab-web-forms').Collection;
+const CollabCollection = require('collab-react-components').Collection;
 
 const documents = new CollabCollection("documents");
 documents.create("editor1");
@@ -128,7 +128,7 @@ Call `CollabEditor` from the client
 
 ```jsx
 import React from 'react';
-import { CollabEditor } from 'collab-web-forms/dist/client';
+import { CollabEditor } from 'collab-react-components/dist/client';
 
 <CollabEditor
     id="myEditor"
@@ -150,7 +150,7 @@ To implement a collaborative form, start by instantiating a new `CollabCollectio
 taking as parameter the name of the collection and a schema:
 
 ```JavaScript
-const CollabCollection = require('collab-web-forms').Collection;
+const CollabCollection = require('collab-react-components').Collection;
 
 const forms = new CollabCollection("forms");
 const schema = {
@@ -176,7 +176,7 @@ At least not until the data is encrypted on the database.
 
 ```jsx
 import React from 'react';
-import { CollabForm } from 'collab-web-forms/dist/client';
+import { CollabForm } from 'collab-react-components/dist/client';
 
 <CollabForm
     id="MyForm" 
@@ -222,7 +222,7 @@ To implement a rich collaborative editor, start by instantiating a new `CollabCo
 taking as parameter the name of the collection:
 
 ```JavaScript
-const CollabCollection = require('collab-web-forms').Collection;
+const CollabCollection = require('collab-react-components').Collection;
 
 const documents = new CollabCollection("documents");
 documents.createRichText('rich-editor1', 'My initial data');
@@ -236,7 +236,7 @@ Just call `CollabRichEditor` from the client.
 
 ```jsx
 import React from 'react';
-import { CollabRichEditor } from 'collab-web-forms/dist/client';
+import { CollabRichEditor } from 'collab-react-components/dist/client';
 
 <CollabRichEditor
     id="MyDoc"
