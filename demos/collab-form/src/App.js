@@ -11,7 +11,7 @@ export default class App extends Component {
 
     this.state = {
       id: 'formTest',
-      uiSchema: {'ui:widget': 'range'}
+      uiSchema: {'ui:widget': 'textarea'}
     };
   }
 

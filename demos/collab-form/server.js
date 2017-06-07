@@ -38,8 +38,8 @@ const forms = new CollabCollection('forms');
 // Define the schema of the data
 const schemaTest = {
     "title": "A single-field form",
-    "type": "integer",
-    "default": 2000
+    "type": "string",
+    "default": "default value"
 };
 
 const schema = {

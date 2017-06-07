@@ -32,10 +32,15 @@ class CollabStringField extends Component {
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.props.formContext, [
-      'data',
-      this.props.name,
-    ]);
+    // If it's a single value, we don't define a path
+    const path = this.props.name !== undefined
+      ? ['data', this.props.name]
+      : ['data'];
+    this.binding = new StringBinding(
+      this._widget,
+      this.props.formContext,
+      path
+    );
     this.binding.setup();
   }
 
