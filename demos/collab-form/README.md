@@ -1,6 +1,6 @@
 # Collaborative Form Example
 
-A collaborative form using [Collab-Web-Forms](https://github.com/darioAnongba/collab-web-forms)
+A collaborative form using [collab-react-components](https://github.com/chili-epfl/collab-react-components)
 
 This example demonstrates
  - Implementation of a backend server using Express and websockets.
@@ -10,7 +10,7 @@ This example demonstrates
 
 
 In this demo, data is not persisted. To persist data, run a Mongo
-server and initialize use id in `collab-web-forms` as follows (for example):
+server and initialize use id in `collab-react-components` as follows (for example):
 
 ```javascript
 const MongoClient = require('mongodb').MongoClient;
@@ -59,5 +59,5 @@ You should be able to see a web form and be able to modify it.
 If you open another browser window to the same URL,
 you should see the two forms synchronized in real time.
 
-![image](https://raw.githubusercontent.com/darioAnongba/collab-web-forms/master/demos/collab-form/real-time-form.png)
+![image](https://raw.githubusercontent.com/darioAnongba/collab-react-components/master/demos/collab-form/real-time-form.png)
 
