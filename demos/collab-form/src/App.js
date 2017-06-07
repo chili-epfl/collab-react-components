@@ -10,41 +10,9 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      id: 'formTest',
+      id: 'form1',
       uiSchema: {
-          "boolean": {
-              "radio": {
-                  "ui:widget": "radio"
-              },
-              "select": {
-                  "ui:widget": "select"
-              }
-          },
-          "string": {
-              "textarea": {
-                  "ui:widget": "textarea",
-                  "ui:options": {
-                      "rows": 5
-                  }
-              },
-              "color": {
-                  "ui:widget": "color"
-              }
-          },
-          "secret": {
-              "ui:widget": "hidden"
-          },
-          "disabled": {
-              "ui:disabled": true
-          },
-          "readonly": {
-              "ui:readonly": true
-          },
-          "widgetOptions": {
-              "ui:options": {
-                  "backgroundColor": "yellow"
-              }
-          }
+          textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
       }
     };
   }
