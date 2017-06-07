@@ -69,16 +69,16 @@ export default class CollabCollection {
    */
   createForm(id, schema = {}, callback = () => {}) {
     function createString(schemaField) {
-      return typeof (schemaField.default === 'undefined')
-        ? ''
-        : schemaField.default;
+      return schemaField.default !== undefined ? schemaField.default : '';
     }
     function createInteger(schemaField) {
-      return typeof (schemaField.default === 'undefined')
-        ? 0
-        : schemaField.default;
+      return schemaField.default !== undefined ? schemaField.default : 0;
     }
-    function createObject(data, schemaField) {
+    function createBoolean(schemaField) {
+      return schemaField.default !== undefined;
+    }
+
+    function createObject(schemaField, data) {
       _.each(schemaField.properties, function(value, key) {
         let prop = {};
         switch (value.type) {
@@ -99,13 +99,13 @@ export default class CollabCollection {
               : value.default;
             break;
           default:
-            prop[key] = typeof value.default === 'undefined'
-              ? null
-              : value.default;
+            callback(Error('CollabCollection: type is not supported'));
         }
 
         _.extend(data, prop);
       });
+
+      return data;
     }
 
     const doc = this.connection.get(this.collectionName, id);
@@ -122,9 +122,14 @@ export default class CollabCollection {
           case 'integer':
             data = createInteger(schema);
             break;
-          case 'object':
-            createObject(schema, data);
+          case 'boolean':
+            data = createBoolean(schema);
             break;
+          case 'object':
+            data = createObject(schema, data);
+            break;
+          default:
+            callback(Error('CollabCollection: type is not supported'));
         }
 
         doc.create({ schema, data }, function(err) {

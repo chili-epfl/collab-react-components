@@ -5,6 +5,7 @@
 const Express = require('express');
 const CollabServer = require('../../dist').Server;
 const CollabCollection = require('../../dist').Collection;
+const MongoClient = require('mongodb').MongoClient;
 
 /* Create Express application */
 const app = Express();
@@ -13,17 +14,32 @@ if (process.env.NODE_ENV === 'production') {
   app.use(Express.static('client/build'));
 }
 
+// Create a MongoDB server
+const url = 'mongodb://localhost:27017/my-collaborative-app';
+MongoClient.connect(url)
+    .catch(function (err) {
+        if (err) throw err;
+    })
+;
+
+const options = {
+    db: {
+        type: 'mongo',
+        url
+    }
+};
+
 // Create a CollabServer instance
-CollabServer.start(app);
+CollabServer.start(app, options);
 
 // Create the collection that will hold the shared data.
 const forms = new CollabCollection('forms');
 
 // Define the schema of the data
-
 const schemaTest = {
     "title": "A single-field form",
-    "type": "string"
+    "type": "integer",
+    "default": 2000
 };
 
 const schema = {
