@@ -83,23 +83,21 @@ export default class CollabCollection {
         let prop = {};
         switch (value.type) {
           case 'string':
-            prop[key] = typeof value.default === 'undefined'
-              ? ''
-              : value.default;
+            prop[key] = createString(value);
             break;
           case 'boolean':
-            prop[key] = typeof value.default === 'undefined'
-              ? false
-              : value.default;
+            prop[key] = createBoolean(value);
             break;
           case 'integer':
           case 'number':
-            prop[key] = typeof value.default === 'undefined'
-              ? 0
-              : value.default;
+            prop[key] = createInteger(value);
             break;
           default:
-            callback(Error('CollabCollection: type is not supported'));
+            callback(
+              Error(
+                'CollabCollection: array or nested object type are not yet supported'
+              )
+            );
         }
 
         _.extend(data, prop);
@@ -129,7 +127,9 @@ export default class CollabCollection {
             data = createObject(schema, data);
             break;
           default:
-            callback(Error('CollabCollection: type is not supported'));
+            callback(
+              Error('CollabCollection: array type is not yet supported')
+            );
         }
 
         doc.create({ schema, data }, function(err) {
