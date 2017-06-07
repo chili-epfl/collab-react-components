@@ -1,8 +1,7 @@
 # collab-react-components
 
-Database backend and React components for smooth and quick integration of real-time collaborative components using React.
-This package is an abstraction layer to the database backend [ShareDB](https://github.com/share/sharedb)
-for collaborative components wrapped into React components. 
+Database backend and collaborative React components.
+This package is an abstraction layer to the famous collaborative database backend [ShareDB](https://github.com/share/sharedb). 
 
 The current available components are:
  - A simple collaborative editor
