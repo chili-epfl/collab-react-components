@@ -29,7 +29,7 @@
   "scripts": {
     "cs-format": "prettier $npm_package_options_prettier ./src/**/*.js --write",
     "precommit": "lint-staged",
-    "prepublish": "babel --plugins transform-es2015-modules-umd src --ignore __tests__ --out-dir ./dist",
+    "prepublish": "rimraf ./dist && babel --plugins transform-es2015-modules-umd src --ignore __tests__ --out-dir ./dist",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
     "testonly": "mocha $npm_package_options_mocha",
