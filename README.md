@@ -1,6 +1,26 @@
-# collab-web-forms
+# collab-react-components
 
-Database backend and React components for smooth and quick integration of a real-time collaborative form using React.
+Database backend and React components for smooth and quick integration of real-time collaborative components using React.
+This package is an abstraction layer to the database backend [ShareDB](https://github.com/share/sharedb)
+for collaborative components wrapped into React components. 
+
+The current available components are:
+ - A simple collaborative editor
+ - A rich collaborative editor based on [React-Quill](https://github.com/zenoamaro/react-quill)
+ - A collaborative form based on [react-jsonschema-form](https://github.com/mozilla-services/react-jsonschema-form)
+
+## Example apps
+Multiple example apps are present in the `demos` directory. Feel free look at
+them for a real implementation.
+
+To start the demo applications, just clone the repository, move to the desired demo,
+install the npm packages and start the application:
+
+```
+cd demos/collab-editor
+npm install
+npm start
+```
 
 ## Table of contents
 - [Installation](#installation)
@@ -169,12 +189,12 @@ with few exceptions (see below).
 Props of `CollabForm` that vary from `react-jsonschema-form`:
 - `id`: ID of the form to fetch from the database
 - `collectionName`: Name of the collection
-
-You should not pass a `schema` to the `CollabForm` component.
+- You should not pass a `schema` to the `CollabForm` component.
+- You should not pass `formData` to `CollabForm`, the data will be fetched
+  from the collaboratively shared data in the databas
 
 The supported collaborative String types are `text`, `textarea` and `uri`.
 They can be defined in the `uiSchema` like:
-> Note: Other types such as `date` or `email` cannot be updated simultaneously in a collaborative manner.
 
 ```jsx
 const uiSchema = {
@@ -189,11 +209,11 @@ const uiSchema = {
 />
 
 ```
->Note: `text` is the default String type.
+> Note: Other types such as `date` or `email` cannot be updated simultaneously in a collaborative manner.
 
->Note: Do not pass `formData` to `CollabForm`, the data will be fetched
-from the collaboratively shared data in the database.
-
+At the moment, `CollabForm` only supports form schemas where the root
+element is a non-nested `object` (does not contain other objects or arrays).
+We are currently working on implementing `array` capabilities.
 
 ### Rich Collaborative Editor
 >Note: The collaborative form is based on [react-quill](https://github.com/zenoamaro/react-quill)
@@ -234,10 +254,6 @@ Props of `CollabRichEditor` that vary from `react-quill`:
 
 >Note: Do not pass `value` or `defaultValue` to `CollabRichEditor`, the data will be fetched
 from the collaboratively shared data on the server.
-
-## Example app
-Multiple example apps are present in the `demos` directory. Feel free look at
-them for a real implementation.
 
 ## License
 MIT
