@@ -18,17 +18,22 @@ class CollabStringField extends Component {
 
     const { widget = 'text' } = getUiOptions(this.props.uiSchema);
     this.isAvailableWidget = isAvailableWidget(widget);
+
+    // It's collaborative only if it's an available widget, a string and not a date:
+    this.isCollab =
+      this.isAvailableWidget &&
+      this.props.schema.type === 'string' &&
+      this.props.schema.format === undefined;
   }
 
   componentDidMount() {
-    if (this.isAvailableWidget && this.props.schema.type === 'string') {
+    if (this.isCollab) {
       this.createBinding();
     }
   }
 
   componentWillUnmount() {
-    if (this.isAvailableWidget && this.props.schema.type === 'string')
-      this.destroyBinding();
+    if (this.isCollab) this.destroyBinding();
   }
 
   createBinding() {
@@ -87,7 +92,7 @@ class CollabStringField extends Component {
     const Widget = CollabStringField.getWidget(schema, widget, widgets);
 
     const ref = {};
-    if (this.isAvailableWidget) ref.widgetRef = w => (this._widget = w);
+    if (this.isCollab) ref.widgetRef = w => (this._widget = w);
 
     if (options.emptyValue === undefined) options.emptyValue = '';
 

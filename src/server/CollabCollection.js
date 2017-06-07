@@ -78,7 +78,7 @@ export default class CollabCollection {
       return schemaField.default !== undefined;
     }
 
-    function createObject(schemaField, data) {
+    function createObject(schemaField, data = {}) {
       _.each(schemaField.properties, function(value, key) {
         let prop = {};
         switch (value.type) {
@@ -92,10 +92,14 @@ export default class CollabCollection {
           case 'number':
             prop[key] = createInteger(value);
             break;
+          case 'object':
+            prop[key] = createObject(value);
+            console.log(prop[key]);
+            break;
           default:
             callback(
               Error(
-                'CollabCollection: array or nested object type are not yet supported'
+                'CollabCollection: definitions, arrays and nested objects are not yet supported'
               )
             );
         }

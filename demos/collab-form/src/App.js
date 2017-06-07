@@ -11,7 +11,16 @@ export default class App extends Component {
 
     this.state = {
       id: 'formTest',
-      uiSchema: {'ui:widget': 'textarea'}
+      uiSchema: {
+          "alternative": {
+              "alt-datetime": {
+                  "ui:widget": "alt-datetime"
+              },
+              "alt-date": {
+                  "ui:widget": "alt-date"
+              }
+          }
+      }
     };
   }
 

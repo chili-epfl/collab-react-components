@@ -37,9 +37,40 @@ const forms = new CollabCollection('forms');
 
 // Define the schema of the data
 const schemaTest = {
-    "title": "A single-field form",
-    "type": "string",
-    "default": "default value"
+    "title": "Date and time widgets",
+    "type": "object",
+    "properties": {
+        "native": {
+            "title": "Native",
+            "description": "May not work on some browsers, notably Firefox Desktop and IE.",
+            "type": "object",
+            "properties": {
+                "datetime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        },
+        "alternative": {
+            "title": "Alternative",
+            "description": "These work on most platforms.",
+            "type": "object",
+            "properties": {
+                "alt-datetime": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "alt-date": {
+                    "type": "string",
+                    "format": "date"
+                }
+            }
+        }
+    }
 };
 
 const schema = {
@@ -65,8 +96,12 @@ const schema2 = {
 };
 
 // Create the shared form data
-forms.createForm('form1', schema);
-forms.createForm('form2', schema2);
+forms.createForm('form1', schema, function(err) {
+    throw err;
+});
+forms.createForm('form2', schema2, function(err) {
+    throw err;
+});
 forms.createForm('formTest', schemaTest, function(err) {
-  console.log(err);
+  throw err;
 });
