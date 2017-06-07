@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import StringBinding from 'sharedb-string-binding';
-import { isAvailableWidget } from '../utils';
+import { isAvailableWidget, isAvailableFormat, findPath } from '../utils';
 import {
   getWidget,
   getUiOptions,
@@ -17,19 +17,34 @@ class CollabStringField extends Component {
     super(props);
 
     const { widget = 'text' } = getUiOptions(this.props.uiSchema);
-    this.isAvailableWidget = isAvailableWidget(widget);
+    const availWidget = isAvailableWidget(widget);
+    const availFormat = isAvailableFormat(this.props.schema.format);
+
+    // It's collaborative only if it's an available widget, a string and not a date or email:
+    this.isCollab =
+      availWidget &&
+      this.props.schema.type === 'string' &&
+      (this.props.schema.format === undefined || availFormat);
   }
 
   componentDidMount() {
-    if (this.isAvailableWidget) this.createBinding();
+    if (this.isCollab) {
+      this.createBinding();
+    }
   }
 
   componentWillUnmount() {
-    if (this.isAvailableWidget) this.destroyBinding();
+    if (this.isCollab) this.destroyBinding();
   }
 
   createBinding() {
-    this.binding = new StringBinding(this._widget, this.props.formContext, ['data', this.props.name]);
+    // If it's a single value, we don't define a path
+    const path = findPath(this.props.idSchema.$id, this.props.name);
+    this.binding = new StringBinding(
+      this._widget,
+      this.props.formContext,
+      path
+    );
     this.binding.setup();
   }
 
@@ -39,9 +54,11 @@ class CollabStringField extends Component {
 
   static getWidget(schema, widget, widgets) {
     if (widget === 'password') {
-      throw Error('You should not use the widget "password" within a collaborative form');
+      throw Error(
+        'You should not use the widget "password" within a collaborative form'
+      );
     } else {
-      return getWidget(schema, widget, widgets)
+      return getWidget(schema, widget, widgets);
     }
   }
 
@@ -58,21 +75,23 @@ class CollabStringField extends Component {
       autofocus,
       onChange,
       onBlur,
-      registry = getDefaultRegistry()
+      registry = getDefaultRegistry(),
     } = this.props;
 
     const { title, format } = schema;
     const { widgets, formContext } = registry;
     const enumOptions = Array.isArray(schema.enum) && optionsList(schema);
     const defaultWidget = format || (enumOptions ? 'select' : 'text');
-    const { widget = defaultWidget, placeholder = '', ...options } = getUiOptions(
-      uiSchema
-    );
+    const {
+      widget = defaultWidget,
+      placeholder = '',
+      ...options
+    } = getUiOptions(uiSchema);
 
     const Widget = CollabStringField.getWidget(schema, widget, widgets);
 
     const ref = {};
-    if (this.isAvailableWidget) ref.widgetRef = w => this._widget = w;
+    if (this.isCollab) ref.widgetRef = w => (this._widget = w);
 
     if (options.emptyValue === undefined) options.emptyValue = '';
 
@@ -92,10 +111,9 @@ class CollabStringField extends Component {
         autofocus={autofocus}
         registry={registry}
         placeholder={placeholder}
-        { ...ref }
+        {...ref}
       />
     );
-
   }
 }
 

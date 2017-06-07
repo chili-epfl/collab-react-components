@@ -29,6 +29,8 @@ export default class CollabForm extends Component {
     this.state = {
       form: null,
       nonCollabKeys: null,
+      isObject: true,
+      isCollab: false,
     };
 
     // We define our custom field for collaborative text (all strings)
@@ -75,30 +77,57 @@ export default class CollabForm extends Component {
     form.on('del', del.bind(this));
 
     function load() {
-      // We save all non-collaborative keys
-      const nonCollabKeys = [];
-      const properties = form.data.schema.properties;
-      Object.keys(properties).forEach(key => {
-        if (properties[key].type !== 'string') {
-          nonCollabKeys.push(key);
-        } else if (props.uiSchema[key]) {
+      function pushNonCollabKeys(properties) {
+        // We save all non-collaborative keys
+        const nonCollabKeys = [];
+        Object.keys(properties).forEach(key => {
+          if (properties[key].type !== 'string') {
+            nonCollabKeys.push(key);
+          } else if (props.uiSchema[key]) {
+            // If the widget is not collaborative, we also have to update it !
+            const { widget = 'text' } = getUiOptions(props.uiSchema[key]);
+            const isSupported = isAvailableWidget(widget);
+            if (!isSupported) {
+              nonCollabKeys.push(key);
+            }
+          }
+        });
+
+        return nonCollabKeys;
+      }
+
+      switch (form.data.schema.type) {
+        case 'string':
           // If the widget is not collaborative, we also have to update it !
-          const { widget = 'text' } = getUiOptions(props.uiSchema[key]);
+          const { widget = 'text' } = getUiOptions(props.uiSchema);
           const isSupported = isAvailableWidget(widget);
           if (!isSupported) {
-            nonCollabKeys.push(key);
+            this.setState({ form, isObject: false });
+          } else {
+            this.setState({ form, isObject: false, isCollab: true });
           }
-        }
-      });
-
-      // Form data available only when we are done loading the form
-      this.setState({ form, nonCollabKeys });
+          break;
+        case 'object':
+          const nonCollabKeys = pushNonCollabKeys(form.data.schema.properties);
+          // Form data available only when we are done loading the form
+          this.setState({ form, nonCollabKeys });
+          break;
+        case 'array':
+          throw Error('CollabForm: Array type is not yet supported');
+          break;
+        default:
+          this.setState({ form, isObject: false });
+      }
     }
 
     function update(op, source) {
       // We only update if we receive a modification from outside on a non collaborative field
-      const isNonCollab = _.contains(this.state.nonCollabKeys, op[0].p[1]);
-      if (!source && isNonCollab) {
+      if (this.state.isObject) {
+        const isNonCollab = _.contains(this.state.nonCollabKeys, op[0].p[1]);
+        if (!source && isNonCollab) {
+          this.setState({ form });
+        }
+      } else if (!source && !this.state.isCollab) {
         this.setState({ form });
       }
     }
@@ -111,17 +140,26 @@ export default class CollabForm extends Component {
   }
 
   onChange(changeStatus) {
-    // We update every element that is non collaborative on onChange
-    Object.keys(changeStatus.formData).forEach(key => {
-      if (this.state.form.data.data[key] !== changeStatus.formData[key]) {
-        const op = [
-          { p: ['data', key], od: null, oi: changeStatus.formData[key] },
-        ];
-        this.state.form.submitOp(op, function(err) {
-          if (err) throw err;
-        });
-      }
-    });
+    if (this.state.isObject) {
+      Object.keys(changeStatus.formData).forEach(key => {
+        if (this.state.form.data.data[key] !== changeStatus.formData[key]) {
+          const op = [
+            { p: ['data', key], od: null, oi: changeStatus.formData[key] },
+          ];
+          this.state.form.submitOp(op, function(err) {
+            if (err) throw err;
+          });
+        }
+      });
+    } else if (
+      !this.state.isCollab &&
+      this.state.form.data.data !== changeStatus.formData
+    ) {
+      const op = [{ p: ['data'], od: null, oi: changeStatus.formData }];
+      this.state.form.submitOp(op, function(err) {
+        if (err) throw err;
+      });
+    }
 
     if (this.props.onChange) this.props.onChange(changeStatus);
   }

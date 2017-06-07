@@ -64,39 +64,76 @@ export default class CollabCollection {
    *
    * @param {String} id The form id
    * @param {Object} schema The form schema used to generate the data object
+   * @param {function} callback The callback in case of error
    * @returns {Doc} The Form created
    */
-  createForm(id, schema = {}) {
+  createForm(id, schema = {}, callback = () => {}) {
+    function createString(schemaField) {
+      return schemaField.default !== undefined ? schemaField.default : '';
+    }
+    function createInteger(schemaField) {
+      return schemaField.default !== undefined ? schemaField.default : 0;
+    }
+    function createBoolean(schemaField) {
+      return schemaField.default !== undefined;
+    }
+
+    function createObject(schemaField, data = {}) {
+      _.each(schemaField.properties, function(value, key) {
+        let prop = {};
+        switch (value.type) {
+          case 'string':
+            prop[key] = createString(value);
+            break;
+          case 'boolean':
+            prop[key] = createBoolean(value);
+            break;
+          case 'integer':
+          case 'number':
+            prop[key] = createInteger(value);
+            break;
+          case 'object':
+            prop[key] = createObject(value);
+            break;
+          default:
+            callback(
+              Error(
+                'CollabCollection: definitions, arrays and nested objects are not yet supported'
+              )
+            );
+        }
+
+        _.extend(data, prop);
+      });
+
+      return data;
+    }
+
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch(err => {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
         let data = {};
-
-        _.each(schema.properties, function(value, key) {
-          let prop = {};
-          // If it is a String, we create an empty string if the default value is empty.
-          if (value.type === 'string') {
-            prop[key] = typeof value.default === 'undefined'
-              ? ''
-              : value.default;
-          } else if (value.type === 'boolean') {
-            prop[key] = typeof value.default === 'undefined'
-              ? false
-              : value.default;
-          } else if (value.type === 'integer' || value.type === 'number') {
-            prop[key] = typeof value.default === 'undefined'
-              ? 0
-              : value.default;
-          } else {
-            prop[key] = typeof value.default === 'undefined'
-              ? null
-              : value.default;
-          }
-
-          _.extend(data, prop);
-        });
+        switch (schema.type) {
+          case 'string':
+            data = createString(schema);
+            break;
+          case 'number':
+          case 'integer':
+            data = createInteger(schema);
+            break;
+          case 'boolean':
+            data = createBoolean(schema);
+            break;
+          case 'object':
+            data = createObject(schema, data);
+            break;
+          default:
+            callback(
+              Error('CollabCollection: array type is not yet supported')
+            );
+        }
 
         doc.create({ schema, data }, function(err) {
           if (err) throw err;
