@@ -68,43 +68,64 @@ export default class CollabCollection {
    * @returns {Doc} The Form created
    */
   createForm(id, schema = {}, callback = () => {}) {
+    function createString(schemaField) {
+      return typeof (schemaField.default === 'undefined')
+        ? ''
+        : schemaField.default;
+    }
+    function createInteger(schemaField) {
+      return typeof (schemaField.default === 'undefined')
+        ? 0
+        : schemaField.default;
+    }
+    function createObject(data, schemaField) {
+      _.each(schemaField.properties, function(value, key) {
+        let prop = {};
+        switch (value.type) {
+          case 'string':
+            prop[key] = typeof value.default === 'undefined'
+              ? ''
+              : value.default;
+            break;
+          case 'boolean':
+            prop[key] = typeof value.default === 'undefined'
+              ? false
+              : value.default;
+            break;
+          case 'integer':
+          case 'number':
+            prop[key] = typeof value.default === 'undefined'
+              ? 0
+              : value.default;
+            break;
+          default:
+            prop[key] = typeof value.default === 'undefined'
+              ? null
+              : value.default;
+        }
+
+        _.extend(data, prop);
+      });
+    }
+
     const doc = this.connection.get(this.collectionName, id);
     doc.fetch(err => {
       if (err) throw err;
       // If the document doesn't already exist, we create it following the schema.
       if (doc.type === null) {
-        // If root type is not object, then error:
-        if (schema.type !== 'object') {
-          callback(
-            Error('CollabCollection: The root element must be an object')
-          );
-        }
-
         let data = {};
-
-        _.each(schema.properties, function(value, key) {
-          let prop = {};
-          // If it is a String, we create an empty string if the default value is empty.
-          if (value.type === 'string') {
-            prop[key] = typeof value.default === 'undefined'
-              ? ''
-              : value.default;
-          } else if (value.type === 'boolean') {
-            prop[key] = typeof value.default === 'undefined'
-              ? false
-              : value.default;
-          } else if (value.type === 'integer' || value.type === 'number') {
-            prop[key] = typeof value.default === 'undefined'
-              ? 0
-              : value.default;
-          } else {
-            prop[key] = typeof value.default === 'undefined'
-              ? null
-              : value.default;
-          }
-
-          _.extend(data, prop);
-        });
+        switch (schema.type) {
+          case 'string':
+            data = createString(schema);
+            break;
+          case 'number':
+          case 'integer':
+            data = createInteger(schema);
+            break;
+          case 'object':
+            createObject(schema, data);
+            break;
+        }
 
         doc.create({ schema, data }, function(err) {
           if (err) throw err;
