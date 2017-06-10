@@ -215,7 +215,7 @@ element is a non-nested `object` (does not contain other objects or arrays).
 We are currently working on implementing `array` capabilities.
 
 ### Rich Collaborative Editor
->Note: The collaborative form is based on [react-quill](https://github.com/zenoamaro/react-quill)
+>Note: The collaborative editor is based on [react-quill](https://github.com/zenoamaro/react-quill)
 
 To implement a rich collaborative editor, start by instantiating a new `CollabCollection` on the server,
 taking as parameter the name of the collection:
