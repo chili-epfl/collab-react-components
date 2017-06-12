@@ -21,25 +21,61 @@ const forms = new CollabCollection('forms');
 
 // Define the schema of the data
 const schema = {
-  title: 'My Collaborative form',
-  type: 'object',
-  properties: {
-    input: {type: 'string', title: 'Input'},
-    checkbox: {type: 'boolean', title: 'Checkbox'},
-    checkbox2: {type: 'boolean', title: 'Checkbox2'},
-    textarea: {type: 'string', title: 'Textarea', default: 'Default text'},
-  }
+    title: 'Bubble sort algorithm',
+    type: 'object',
+    properties: {
+        principle: {
+            'type': 'string',
+            'title': 'principle',
+            'description': 'Explain in one line the principle of bubble sort'
+        },
+        complexity: {
+            'type': 'string',
+            'title': 'Complexity',
+            'description': 'What are the worst case and best case time complexity of bubble sort consequently?',
+        },
+        comparisons: {
+            'type': 'integer',
+            'title': 'Comparisons',
+            'description': 'What is the maximum number of comparisons if there are 5 elements in array x?',
+            'enum': [
+                10, 2, 5, 25
+            ],
+        },
+        performance: {
+            'type': 'string',
+            'title': 'Performance',
+            'description': 'Explain why the bubble sort algorithm has a worst complexity than other sort algorithms'
+        },
+    }
 };
 
 const schema2 = {
-  title: 'My Collaborative form 2',
-  type: 'object',
-  properties: {
-    field1: {type: 'string', title: 'Field 1 - Input'},
-    field2: {type: 'boolean', title: 'Field 2 - Checkbox'},
-    field3: {type: 'string', title: 'Field 3 - Textarea', default: 'Field 3 default text'},
-    field4: {type: 'number', title: 'Field 4 - Number'}
-  }
+    title: 'Quick sort algorithm',
+    type: 'object',
+    properties: {
+        color: {
+            'type': 'string',
+            'title': 'Color',
+            'description': 'What color is quick sort?',
+            'default': '#151ce6'
+        },
+        complexity: {
+            'type': 'string',
+            'title': 'Complexity',
+            'description': 'What are the worst case and best case time complexity of quick sort consequently?',
+        },
+        pivot: {
+            'type': 'integer',
+            'title': 'pivot',
+            'description': 'In this sequence, 11 4 20 45 32 60 98 70, which element seems to be the pivot?',
+        },
+        performance: {
+            'type': 'string',
+            'title': 'Performance',
+            'description': 'Explain why the quick sort algorithm has a good complexity'
+        },
+    }
 };
 
 // Create the shared form data

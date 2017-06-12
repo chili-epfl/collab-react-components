@@ -1,56 +1,85 @@
-/**
- * Created by dario on 11.05.2017.
- */
 import React, { Component } from 'react';
-import { CollabForm }  from '../../../dist/client';
+import './App.css';
+import {CollabForm} from '../../../dist/client';
 
-// App component - represents the whole app
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+class App extends Component {
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      id: 'form1',
-      uiSchema: {
-          textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
-      }
-    };
-  }
+        this.uiSchema1 = {
+            complexity: {
+                'ui:placeholder': 'Example: O(n2), O(n3)'
+            },
+            comparisons: {
+                'ui:widget': 'radio',
+                'ui:options': {
+                    'inline': true
+                },
+                'ui:placeholder': 'Choose one'
+            },
+            performance: {
+                'ui:widget': 'textarea',
+                'ui:options': {
+                    'rows': 5
+                }
+            }
+        };
 
-  onChangeForm() {
-    if (this.state.id === 'form1') {
-      this.setState({
-        id: 'form2',
-        uiSchema: {
-          field3: {'ui:widget': 'textarea', 'ui:options': {rows: 8}},
-          field4: {'ui:widget': 'range'},
-        }
-      })
-    } else {
-      this.setState({
-        id: 'form1',
-        uiSchema: {
-          textarea: {'ui:widget': 'textarea', 'ui:options': {rows: 8} },
-        }
-      })
+        this.state = {
+            id: 'form1',
+            uiSchema: this.uiSchema1,
+        };
     }
-  }
 
-  render() {
-    return (
-      <div className="container">
-        <header>
-          <h1>Collaborative Form</h1>
-        </header>
+    onChangeForm() {
+        if (this.state.id === 'form1') {
+            const uiSchema = {
+                color: {
+                    'ui:widget': 'color'
+                },
+                complexity: {
+                    'ui:placeholder': 'Example: O(n2), O(n3)'
+                },
+                pivot: {
+                    'ui:widget': 'range',
+                },
+                performance: {
+                    'ui:widget': 'textarea',
+                    'ui:options': {
+                        'rows': 5
+                    }
+                }
+            };
 
-        <CollabForm
-          id={this.state.id}
-          collectionName="forms"
-          uiSchema={this.state.uiSchema}
-        />
+            this.setState({
+                id: 'form2',
+                uiSchema,
+            });
+        }
+    }
 
-        <button onClick={this.onChangeForm.bind(this)}>Switch form</button>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="container">
+              <div className="row">
+                <div className="col-md-10 col-md-offset-1">
+                  <header>
+                    <h1 className="text-center">Group exercise: Algorithmic quizz</h1>
+                  </header>
+
+                  <div className="row">
+                    <CollabForm
+                        id={this.state.id}
+                        collectionName="forms"
+                        uiSchema={this.state.uiSchema}
+                        onSubmit={this.onChangeForm.bind(this)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+        );
+    }
 }
+
+export default App;
