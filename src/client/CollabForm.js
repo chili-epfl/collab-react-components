@@ -122,12 +122,12 @@ export default class CollabForm extends Component {
         if (!source && isNonCollab) {
           this.setState({ form });
           if (this.props.onRemoteChange)
-            this.props.onRemoteChange(form.data.data);
+            this.props.onRemoteChange(form.id, form.data.data);
         }
       } else if (!source && !this.state.isCollab) {
         this.setState({ form });
         if (this.props.onRemoteChange)
-          this.props.onRemoteChange(form.data.data);
+          this.props.onRemoteChange(form.id, form.data.data);
       }
     }
 
