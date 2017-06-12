@@ -1,6 +1,6 @@
 {
   "name": "collab-react-components",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React components for collaborative editing: text, rich text, and complex forms",
   "repository": {
     "type": "git",
