@@ -119,15 +119,19 @@ export default class CollabForm extends Component {
       // We only update if we receive a modification from outside on a non collaborative field
       if (this.state.isObject) {
         const isNonCollab = _.contains(this.state.nonCollabKeys, op[0].p[1]);
-        if (!source && isNonCollab) {
-          this.setState({ form });
-          if (this.props.onRemoteChange)
-            this.props.onRemoteChange(form.id, form.data.data);
+        if (!source) {
+          if (this.props.onRemoteChange) {
+            this.props.onRemoteChange(form.data.data);
+          }
+          if (isNonCollab) {
+            this.setState({ form });
+          }
         }
       } else if (!source && !this.state.isCollab) {
         this.setState({ form });
-        if (this.props.onRemoteChange)
-          this.props.onRemoteChange(form.id, form.data.data);
+        if (this.props.onRemoteChange) {
+          this.props.onRemoteChange(form.data.data);
+        }
       }
     }
 
