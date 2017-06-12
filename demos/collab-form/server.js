@@ -33,6 +33,12 @@ const schema = {
             'type': 'string',
             'title': 'Complexity',
             'description': 'What are the worst case and best case time complexity of bubble sort consequently?',
+            'enum': [
+                'O(n), O(n2)',
+                'O(n2), O(n3)',
+                'O(1), O(n)',
+                'None of the above'
+            ]
         },
         comparisons: {
             'type': 'integer',

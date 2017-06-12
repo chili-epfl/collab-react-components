@@ -24,7 +24,8 @@ class CollabStringField extends Component {
     this.isCollab =
       availWidget &&
       this.props.schema.type === 'string' &&
-      (this.props.schema.format === undefined || availFormat);
+      (this.props.schema.format === undefined || availFormat) &&
+      this.props.schema.enum === undefined;
   }
 
   componentDidMount() {

@@ -96,10 +96,12 @@ export default class CollabForm extends Component {
             if (properties[key].type !== 'string') {
               nonCollabKeys.push(key);
             } else if (props.uiSchema[key]) {
-              // If the widget is not collaborative, we also have to update it !
+              // If the widget is not collaborative, we also have to update it ! Also if it is an enum
               const { widget = 'text' } = getUiOptions(props.uiSchema[key]);
               const isSupported = isAvailableWidget(widget);
-              if (!isSupported) {
+              const isEnum =
+                form.data.schema.properties[key].enum !== undefined;
+              if (!isSupported || isEnum) {
                 nonCollabKeys.push(key);
               }
             }
