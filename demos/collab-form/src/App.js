@@ -8,7 +8,7 @@ class App extends Component {
 
         this.uiSchema1 = {
             complexity: {
-                'ui:placeholder': 'Example: O(n2), O(n3)'
+                'ui:placeholder': 'Choose one'
             },
             comparisons: {
                 'ui:widget': 'radio',
